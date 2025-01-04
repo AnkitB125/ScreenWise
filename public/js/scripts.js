@@ -47,6 +47,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
+    const listChildren = document.getElementById('listChildren');
+    if (listChildren) {    
+        listChildren.addEventListener('click', () => {
+            window.location.href='list_children.html';
+        });
+    };
+
     // Display Add Offline Activity Form
     const btnAddOfflineActivityForm = document.getElementById('btnAddOfflineActivityForm');
     if (btnAddOfflineActivityForm) {    

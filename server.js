@@ -1,9 +1,11 @@
+const dotenv = require('dotenv');
+dotenv.config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const PORT = 3000;
 const { postOfflineActivity } = require('./public/js/offlineActivity_db');
-const { postChild } = require('./public/js/child_db');
+const { postChild, listChildren, deleteChild, updateChild } = require('./public/js/child_db');
 const { postOnlineActivity } = require('./public/js/onlineActivity_db');
 const { listChild } = require('./public/js/child_db');
 const { startTimer } = require('./public/js/timer_db');
@@ -41,6 +43,7 @@ app.get('/api/list-offlineActivity', (req, res) => {
 });
 
 
+
 // API endpoint to add child record
 app.post('/api/child', (req, res) => {
     const child = req.body;
@@ -53,13 +56,34 @@ app.post('/api/child', (req, res) => {
     });
 });
 
+// API endpoint to add child record
+app.get('/api/children', (req, res) => {
 
-// API endpoint to list child records
-app.get('/api/list-child', (req, res) => {
-
-    listChild((err, result, statusCode) => {
+    listChildren((err, result, statusCode) => {
         if (err) {
-            return res.status(500).send('Error getting Child records.');
+            return res.status(500).send('Failed to get children.');
+        }
+        res.status(statusCode).send(result);
+    });
+});
+// API endpoint to delete child record
+app.delete('/api/children/:id', (req, res) => {
+    const childId = req.params.id;
+
+    deleteChild(childId, (err, result, statusCode) => {
+        if (err) {
+            return res.status(500).send('Error deleting Child record.');
+        }
+        res.status(statusCode).send(result);
+    });
+});
+
+app.put('/api/children/:id', (req, res) => {
+    const childId = req.params.id;
+    const child = req.body;
+    updateChild(childId, child, (err, result, statusCode) => {
+        if (err) {
+            return res.status(500).send('Error deleting Child record.');
         }
         res.status(statusCode).send(result);
     });

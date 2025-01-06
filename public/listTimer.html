@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>ScreenWise - Add Offline Activity</title>
+        <meta name="description" content="ScreenWise Screen Time Tracker">
+        <meta name="author" content="SIT725 Students - KT, PJ and PH">
+        <meta property="og:title" content="ScreenWise Add Offline Activity">
+        <meta property="og:type" content="website">
+        <meta property="og:description" content="ScreenWise Add Offline Activity">
+        <!-- Compiled and minified CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!-- Custom Style Sheet-->
+        <link rel="stylesheet" href="css/styles.css">
+    </head>
+    <body>
+        <img class="responsive-img" width="100%" src="images/banner.png" />
+        <main class="main-body">
+            <div class="container space-above-50 space-below-50">
+                <div class="row">
+                    <h3>Record of Screen Time Usage</h3>    
+                    <table class="striped">
+                        <thead>
+                        <tr>
+                            <th>Child Name</th>
+                            <th>Online Activity Name</th>
+                            <th>Offline Activity Name</th>
+                            <th>Start Date Time</th>
+                            <th>End Date Time</th>
+                            <th>Time Used</th>
+                            <th>Points Used</th>
+                        </tr>
+                        </thead>
+                
+                        <tbody>
+                        <tr>
+                            <td>Alvin</td>
+                            <td>Reading a E-book(Novel)</td>
+                            <td>Playing Football</td>
+                            <td>15:00</td>
+                            <td>16:00</td>
+                            <td>1hr</td>
+                            <td>6</td>
+                        </tr>
+                        <!-- Display dynamic content from mongodb -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col s12 right-align">
+                    <a class="waves-effect waves-light btn click-me-button" id="btnBack"><i
+                        class="material-icons left">auto_fix_high</i>BACK</a>
+                </div>
+            </div>
+        
+    
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <script src="js/scripts.js"></script>
+        <script src="js/offlineActivity.js"></script>
+    </body>
+</html>

@@ -9,7 +9,8 @@ const { listChild } = require('./public/js/child_db');
 const { startTimer } = require('./public/js/timer_db');
 const { listOfflineActivity } = require('./public/js/offlineActivity_db');
 const { listOnlineActivity } = require('./public/js/onlineActivity_db');
-
+const { postDailyUsage } = require('./public/js/dailyUsage_db');
+const { getDailyUsage } = require('./public/js/dailyUsage_db');
 
 // Middleware
 app.use(express.json());
@@ -97,11 +98,42 @@ app.post('/api/timer', (req, res) => {
 
     startTimer(timer, (err, result, statusCode) => {
         if (err) {
-            return res.status(500).send('Error starting timer.');
+            return res.status(500).send('Error stopping timer.');
         }
         res.status(statusCode).send(result);
     });
 });
+
+
+// API endpoint to add/update dailyUsage
+app.post('/api/daily-usage', (req, res) => {
+    const dailyUsage = req.body;
+
+    postDailyUsage(dailyUsage, (err, result, statusCode) => {
+        if (err) {
+            return res.status(500).send('Error updating daily usage.');
+        }
+        res.status(statusCode).send(result);
+    });
+});
+
+
+// API endpoint to get dailyUsage
+app.get('/api/get-daily-usage', (req, res) => {
+    
+    getDailyUsage(req, (err, result, statusCode) => {
+        if(result) {
+            return res.status(statusCode).json(result); //return result
+        } else {
+            if (err) {
+                return res.status(500).send('Error retrieving daily usage.'); //return error
+            } else {
+            res.status(statusCode).send(result); // return null
+            }
+        }
+    });
+});
+
 
 // Start the server
 app.listen(PORT, () => {

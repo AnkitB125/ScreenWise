@@ -25,31 +25,57 @@
                     <h2>Timer&nbsp<span id="timerStatus"></h2>
                     <form id="timerForm">
                         <label>Select your name</label>
-                        <select id="childNameSelect" onchange="displayPointsAvailable(this)" required>
+                        <select id="childNameSelect" onchange="displayPointsAvailable(this)">
                             <option value="" disabled selected>select...</option>
                         </select>
                         <div class="grey-text text-darken-2 min-height-20" id="pointsAvailable"></div>
                         
                         <div class="space-above-50"></div>
                         <label>Select the online activity you will do</label>
-                        <select id="onlineActivityNameSelect" onchange="displayOnlineActivityPointsPerHour(this)" required>
+                        <select id="onlineActivityNameSelect" onchange="displayOnlineActivityPointsPerHour(this)">
                             <option value="" disabled selected>select...</option>
                         </select>
                         <div class="grey-text text-darken-2 min-height-20" id="onlineActivityPointsPerHour"></div>
 
                         <div class="space-above-50"></div>
                         <label>Select the activity you will do when your screen time is up</label>
-                        <select id="offlineActivityNameSelect" onchange="displayOfflineActivityPointsPerHour(this)" required>
+                        <select id="offlineActivityNameSelect" onchange="displayOfflineActivityPointsPerHour(this)">
                             <option value="" disabled selected>select...</option>
                         </select>
                         <div class="grey-text text-darken-2 min-height-20" id="offlineActivityPointsPerHour"></div>
 
                         <div class="space-above-50"></div>
                         <div class="row">
-                            <div class="col s12 right-align"><button type="submit" class="waves-effect waves-light btn" id="btnSubmit">Start Timer</button></div>
+                            <div class="col s12 right-align"><button type="submit" class="waves-effect waves-light btn" id="btnStartTimer">Start Timer</button></div>
                         </div>
+                    </form>
+
+                    <form id="timerFormDisplay">
+                        <label>Child Name</label>
+                        <input id="childNameDisplay" disabled="true">
+                        </select>
+                        <div class="grey-text text-darken-2 min-height-20" id="pointsAvailableDisplay"></div>
+                        
+                        <div class="space-above-50"></div>
+                        <label>Screentime Activity</label>
+                        <input id="onlineActivityNameDisplay" disabled="true">
+                        </select>
+                        <div class="grey-text text-darken-2 min-height-20" id="onlineActivityPointsPerHourDisplay"></div>
+
+                        <div class="space-above-50"></div>
+                        <label>Post Screentime (Offline) Activity</label>
+                        <input id="offlineActivityNameDisplay" disabled="true">
+                        </select>
+                        <div class="grey-text text-darken-2 min-height-20" id="offlineActivityPointsPerHourDisplay"></div>
+
+                        <div class="space-above-50"></div>
                         <div class="row">
-                            <div class="col s12 right-align"><button type="button" class="waves-effect waves-light btn" id="btnBack">Back</button></div>
+                            <div class="col s12 right-align"><button type="submit" class="waves-effect waves-light btn" id="btnStopTimer">Stop Timer</button></div>
+                        </div>
+                    </form>
+
+                        <div class="row">
+                            <div class="col s12 right-align"><button type="button" class="waves-effect waves-light btn" id="btnBack">Cancel</button></div>
                         </div>
                         <div class="space-above-50"></div>
                         <div class="row">
@@ -57,6 +83,10 @@
                         </div>
                         
                         <input type="hidden" id="startDateTime">
+                        <input type="hidden" id="endDateTime">
+                        <input type="hidden" id="pointsPerHour">
+                        <input type="hidden" id="minutesPerPoint">
+                        <input type="hidden" id="dailyAllowancePoints">
                     </form>
                 </div>
             </div>

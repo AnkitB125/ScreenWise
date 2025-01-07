@@ -2,7 +2,6 @@ let client = require('./dbConnection');
 
 let collection = client.db('screenWise').collection('offlineActivities');
 
-
 async function postOfflineActivity(activity, callback) {
     try {
         // First check if record already exists so that error message can be displayed
@@ -13,7 +12,7 @@ async function postOfflineActivity(activity, callback) {
 
         } else {
             const insertedRow = await collection.insertOne(activity);
-            response = 'Activity record ' + insertedRow.insertedId + ' inserted for ' + activity.offlineActivityName;
+            response = 'Offline Activity ' + activity.offlineActivityName + ' added. ';
             return callback(null, response, 201);
         };
     } catch (err) {

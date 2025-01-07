@@ -7,18 +7,19 @@ async function postOnlineActivity(activity, callback) {
         // First check if record already exists so that error message can be displayed
         const existingActivity = await collection.findOne({ onlineActivityNameText: { $eq: activity.onlineActivityNameText}}); 
         if(existingActivity) {
-            response = "Activity " + activity.onlineActivityName + " already exists.";  
+            response = "Activity " + activity.onlineActivityNameText + " already exists.";  
             return callback(null, response, 409);
 
         } else {
             const insertedRow = await collection.insertOne(activity);
-            response = 'Activity record ' + insertedRow.insertedId + ' inserted for ' + activity.onlineActivityName;
+            response = 'Online Activity ' + activity.onlineActivityName + ' added. ';
             return callback(null, response, 201);
         };
     } catch (err) {
         return callback(err);
     } 
 };
+
 
 // Function to list all offline activities
 async function listOnlineActivity(callback) {

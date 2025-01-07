@@ -9,9 +9,9 @@ document.addEventListener('DOMContentLoaded', () => {
         onlineActivityForm.addEventListener('submit',async (event) => {
             event.preventDefault(); // Prevent default form submission
             const onlineActivityData = {
-                onlineActivityName: document.getElementById('onlineActivityName').value,
+                onlineActivityName: firstField.value,
                 pointsPerHour: document.getElementById('pointsPerHour').value,
-                onlineActityNameText: document.getElementById('onlineActivityName').value.toLowerCase()
+                onlineActivityNameText: firstField.value.toLowerCase()
             };
             try {
                 const response = await fetch('/api/online-activity', {

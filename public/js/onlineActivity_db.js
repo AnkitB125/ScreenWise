@@ -1,4 +1,5 @@
 let client = require('./dbConnection');
+let { ObjectId } = require('mongodb');
 
 let collection = client.db('screenWise').collection('onlineActivities');
 
@@ -29,12 +30,33 @@ async function listOnlineActivity(callback) {
         if(listValues) {
             return callback(null, listValues, 201);
         } else {
-            return callback(null, 'No online activity values values found', 404);
+            return callback(null, {
+                "message": "No online activities found."
+            }, 404);
         }
     } catch (err) {
         return callback(err);
     };
 };
+
+
+async function deleteOnlineActivity(id, callback) {
+    try {
+        const deleteResult = await collection.deleteOne({ _id: new ObjectId(id) });
+        
+        if (deleteResult.deletedCount > 0) {
+            return callback(null, {
+                "message": "Activity deleted successfully",
+            }, 200);
+        } else {
+            return callback(null, {
+                "message": "Activity not found"
+            }, 404);
+        }
+    } catch (err) {
+        return callback(err);
+    }
+}
 
 // Need to add getOnlineActivity, updateOnlineActivity and deleteOnlineActivity
 

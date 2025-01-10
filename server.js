@@ -4,10 +4,9 @@ const app = express();
 const PORT = 3000;
 const { postOfflineActivity, listOfflineActivity, deleteOfflineActivity, updateOfflineActivity } = require('./public/js/offlineActivity_db');
 const { postChild } = require('./public/js/child_db');
-const { postOnlineActivity } = require('./public/js/onlineActivity_db');
+const { postOnlineActivity, listOnlineActivity, deleteOnlineActivity, updateOnlineActivity  } = require('./public/js/onlineActivity_db');
 const { listChild } = require('./public/js/child_db');
 const { startTimer } = require('./public/js/timer_db');
-const { listOnlineActivity } = require('./public/js/onlineActivity_db');
 
 
 // Middleware
@@ -105,6 +104,17 @@ app.post('/api/online-activity', (req, res) => {
     });
 });
 
+// list
+app.get('/api/list-onlineActivity', (req, res) => {
+
+    listOnlineActivity((err, result, statusCode) => {
+        if (err) {
+            return res.status(500).send('Error getting Online Activity records.');
+        }
+        res.status(statusCode).send(result);
+    });
+});
+
 //
 app.delete('/api/delete-onlineActivity/:id', (req, res) => {
     const id = req.params.id;
@@ -112,6 +122,21 @@ app.delete('/api/delete-onlineActivity/:id', (req, res) => {
     deleteOnlineActivity(id, (err, result, statusCode) => {
         if (err) {
             return res.status(500).send('Error deleting Online Activity record.');
+        }
+        res.status(statusCode).send(result);
+    });
+});
+
+// update online activity
+app.put('/api/update-onlineActivity/:id', (req, res) => {
+    const id = req.params.id;
+    const activity = req.body;
+
+    updateOnlineActivity(id, activity, (err, result, statusCode) => {
+        if (err) {
+            return res.status(500).send({
+                "message": "Error updating online activity"
+            });
         }
         res.status(statusCode).send(result);
     });

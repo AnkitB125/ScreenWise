@@ -85,5 +85,20 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.href='onlineActivity.html';
         });
     };
+
+    const openAddOnlineActivity = document.getElementById('openAddOnlineActivity');
+    if (openAddOnlineActivity) {    
+        openAddOnlineActivity.addEventListener('click', () => {
+            window.location.href='onlineActivity.html';
+        });
+    };
+
+    const openListOnlineActivity = document.getElementById('openListOnlineActivity');
+    if (openListOnlineActivity) {    
+        openListOnlineActivity.addEventListener('click', () => {
+            window.location.href='listOnlineActivity.html';
+        });
+    };
+
 });
 

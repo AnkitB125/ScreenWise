@@ -102,42 +102,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-// Fetch Children
-async function fetchChildren() {
-    try {
-        const response = await fetch('/api/children', { method: 'GET' });
-        const data = await response.json();
-
-        if (response.ok) {
-            populateDataTable(data);
-        } else {
-            // showAlert('Error fetching children: ' + data.message, true);
-        }
-    } catch (error) {
-        console.error('Fetch error:', error);
-        // showAlert('Network error: ' + error.message, true);
-    }
-}
 
 const fetchOfflineActivities = async () => {
     try {
         const response = await fetch('/api/list-offlineActivity');
         const data = await response.json();
         populateDataTable(data);
-        // const tbody = document.getElementById('offline-activity-tbody');
-        // if (tbody) {
-        //     tbody.innerHTML = '';
-        //     data.forEach(item => {
-        //         const row = document.createElement('tr');
-        //         row.innerHTML = `
-        //             <td>${item.offlineActivityName}</td>
-        //             <td>${item.pointsPerHour}</td>
-        //             <td></td>
-        //         `;
-
-        //         tbody.appendChild(row);
-        //     });
-        // }
         console.log('Offline activities:', data);
     } catch (error) {
         console.error('Error fetching offline activities:', error);

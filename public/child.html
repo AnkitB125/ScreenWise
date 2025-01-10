@@ -1,21 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ScreenWise - Add Child</title>
-    <meta name="description" content="ScreenWise Screen Time Tracker">
-    <meta name="author" content="SIT725 Students - KT, PJ and PH">
-    <meta property="og:title" content="ScreenWise Add Child">
-    <meta property="og:type" content="website">
-    <meta property="og:description" content="ScreenWise Add Child">
-    <!-- Compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!-- Custom Style Sheet-->
-    <link rel="stylesheet" href="css/styles.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ScreenWise - Add Child</title>
+<meta name="description" content="ScreenWise Screen Time Tracker">
+<meta name="author" content="SIT725 Students - KT, PJ and PH">
+<meta property="og:title" content="ScreenWise Add Child">
+<meta property="og:type" content="website">
+<meta property="og:description" content="ScreenWise Add Child">
+<!-- Compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<!-- Custom Style Sheet-->
+<link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
@@ -25,25 +24,34 @@
             <div class="row">
                 <h2>Add a Child</h2>
                 <form id="addChildForm">
+                    <label>Enter child's name</label>
                     <input type="text" type="text" id="childName" class="validate" required>
-                    <label for="childName">Enter child's name</label>
-                    <input type="number" type="number" id="minutesPerPoint" class="validate" required>
-                    <label for="minutesPerPoint">Enter value of screen time (minutes) per point</label>
-                    <input type="number" type="number" id="dailyAllowancePoints" class="validate" required>
-                    <label for="dailyAllowancePoints">Enter daily allowance (points)</label>
-                    <input type="number" type="number" id="dailyLimitPoints" class="validate" required>
-                    <label for="dailyLimitPoints">Enter daily usage limit (points)</label>
-                    <div class="row" style="display: flex; justify-content: right;">
-                        <div class="col s12 right-align">
-                            <button type="submit" class="waves-effect waves-light btn" id="btnAddChild">Add
-                                Child</button>
-                            <button type="button" class="waves-effect waves-light btn" id="btnBackToMain">Back to Main
-                                Menu</button>
-                            <button type="button" id="listChildren" class="waves-effect waves-light btn">List
-                                Children</button>
-                        </div>
-                    </div>
                     <div class="space-above-50"></div>
+
+                    <label>Enter value of screen time (minutes) per point</label>
+                    <input type="number" type="number" id="minutesPerPoint" class="validate" required>
+                    <div class="space-above-50"></div>
+
+                    <label>Enter daily allowance (points)&nbsp;&nbsp;</label><span class="label"
+                        id="dailyAllowanceMinutes"></span>
+                    <input type="number" type="number" id="dailyAllowancePoints"
+                        onblur="calculateDailyAllowanceMinutes()" class="validate" required>
+                    <div class="space-above-50"></div>
+
+                    <label>Enter daily usage limit (points)&nbsp;&nbsp;</label><span class="label"
+                        id="dailyLimitMinutes"></span>
+                    <input type="number" type="number" id="dailyLimitPoints" onblur="calculateDailyLimitMinutes()"
+                        class="validate" required>
+                    <div class="space-above-50"></div>
+
+                    <div class="row">
+                        <div class="col s12 right-align"><button type="submit" class="waves-effect waves-light btn"
+                                id="btnAddChild">Add Child</button></div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 right-align"><button type="button" class="waves-effect waves-light btn"
+                                id="btnBack">Back</button></div>
+                    </div>
                     <div class="row">
                         <div class="error-msg-text" id="messageError"></div>
                         <div class="ok-msg-txt" id="messageOk"></div>

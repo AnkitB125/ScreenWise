@@ -54,6 +54,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
+    const openAddOfflineActivity = document.getElementById('openAddOfflineActivity');
+    if (openAddOfflineActivity) {    
+        openAddOfflineActivity.addEventListener('click', () => {
+            window.location.href='offlineActivity.html';
+        });
+    };
+
+    const openListOfflineActivity = document.getElementById('openListOfflineActivity');
+    if (openListOfflineActivity) {    
+        openListOfflineActivity.addEventListener('click', () => {
+            window.location.href='listOfflineActivity.html';
+        });
+    };
+
     // Display Add Offline Activity Form
     const btnAddOfflineActivityForm = document.getElementById('btnAddOfflineActivityForm');
     if (btnAddOfflineActivityForm) {    
@@ -77,6 +91,20 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.href='onlineActivity.html';
         });
     };
-});
 
+    const openAddOnlineActivity = document.getElementById('openAddOnlineActivity');
+    if (openAddOnlineActivity) {    
+        openAddOnlineActivity.addEventListener('click', () => {
+            window.location.href='onlineActivity.html';
+        });
+    };
+
+    const openListOnlineActivity = document.getElementById('openListOnlineActivity');
+    if (openListOnlineActivity) {    
+        openListOnlineActivity.addEventListener('click', () => {
+            window.location.href='listOnlineActivity.html';
+        });
+    };
+
+});
 

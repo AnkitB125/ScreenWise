@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ScreenWise - Add Offline Activity</title>
+    <meta name="description" content="ScreenWise Screen Time Tracker">
+    <meta name="author" content="SIT725 Students - KT, PJ and PH">
+    <meta property="og:title" content="ScreenWise Add Offline Activity">
+    <meta property="og:type" content="website">
+    <meta property="og:description" content="ScreenWise Add Offline Activity">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Custom Style Sheet-->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <img class="responsive-img" width="100%" src="images/banner.png" />
+    <main class="main-body">
+        <div class="container space-above-50 space-below-50">
+            <div class="row">
+                <div class="error-msg-text" id="messageError"></div>
+                <div class="ok-msg-txt" id="messageOk"></div>
+            </div>
+            <div class="col s12 right-align">
+                <a class="waves-effect waves-light btn click-me-button" id="openAddOfflineActivity"><i
+                        class="material-icons left">auto_fix_high</i>ADD OFFLINE ACTIVITY</a>
+            </div>
+            
+            <div class="row">
+                <h3>Record Representing Offline Activity</h3>
+                <table id="offline-activity-table" class="striped highlight responsive-table">
+                    <thead>
+                        <tr>
+                            <th>Sr</th>
+                            <th>Offline Activity Name</th>
+                            <th>Points Per Hour</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="offline-activity-tbody">
+                    </tbody>
+                </table>
+
+            </div>
+            <!-- <div class="row">
+                    <h3>Record of offline activity completed and points earned</h3>    
+                    <table class="striped">
+                        <thead>
+                        <tr>
+                            <th>Offline Activity Name</th>
+                            <th>Points Per Hour</th>
+                        </tr>
+                        </thead>
+                
+                        <tbody>
+                        <tr>
+                            <td>Playing Football</td>
+                            <td>7</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div> -->
+            <div class="col s12 right-align">
+                <a class="waves-effect waves-light btn click-me-button" id="btnBack"><i
+                        class="material-icons left">auto_fix_high</i>BACK</a>
+            </div>
+            
+
+            <div id="updateOfflineActivity" class="modal">
+                <div class="modal-content">
+                    <h4>Update offline activity</h4>
+                    <form id="updateOfflineActivityForm">
+                        <input type="hidden" id="object_id" />
+                        <div class="input-field">
+                            <input type="text" id="updateActivityName" class="validate" required />
+                            <label for="updateActivityName">Activity Name</label>
+                        </div>
+                        <div class="input-field">
+                            <input type="number" id="updatePoints" class="validate" required />
+                            <label for="updatePoints">Points Per Hour</label>
+                        </div>
+                    </form>
+                    <button class="modal-close waves-effect waves-green btn-flat">Cancel</button>
+                    <button id="btnUpdateOfflineActivity" class="waves-effect waves-green btn-flat">Update</button>
+                </div>
+            </div>
+        </div>
+
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+        <script src="js/scripts.js"></script>
+        <script src="js/offlineActivity.js"></script>
+</body>
+
+</html>

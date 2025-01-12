@@ -1,6 +1,7 @@
 let client = require('./dbConnection');
 
 let collection = client.db('screenWise').collection('offlineActivities');
+let { ObjectId } = require('mongodb');
 
 async function postOfflineActivity(activity, callback) {
     try {
@@ -29,16 +30,64 @@ async function listOfflineActivity(callback) {
         if(listValues) {
             return callback(null, listValues, 201);
         } else {
-            return callback(null, 'No offline activity values values found', 404);
+            return callback(null, {
+                "message": "No offline activities found."
+            }, 404);
         }
     } catch (err) {
         return callback(err);
     };
 };
 
+
+// Function to delete offline activity
+async function deleteOfflineActivity(id, callback) {
+    try {
+        const deleteResult = await collection.deleteOne({ _id: new ObjectId(id) });
+        
+        if (deleteResult.deletedCount > 0) {
+            return callback(null, {
+                "message": "Activity deleted successfully",
+            }, 200);
+        } else {
+            return callback(null, {
+                "message": "Activity not found"
+            }, 404);
+        }
+    } catch (err) {
+        return callback(err);
+    }
+}
+
+
+// Function to update offline activity
+async function updateOfflineActivity(id, updatedActivity, callback) {
+    try {
+        const updateResult = await collection.updateOne(
+            { _id: new ObjectId(id) },
+            { $set: updatedActivity }
+        );
+        
+        if (updateResult.matchedCount > 0) {
+            return callback(null, {
+                "message": "Activity updated successfully"
+            }, 200);
+        } else {
+            return callback(null, {
+                "message": "Activity not found"
+            }, 404);
+        }
+    } catch (err) {
+        return callback(err);
+    }
+}
+
+
 // Need to add getOfflineActivity, updateOfflineActivity and deleteOfflineActivity
 
 module.exports = {
     postOfflineActivity,
-    listOfflineActivity
+    listOfflineActivity,
+    deleteOfflineActivity,
+    updateOfflineActivity
 };

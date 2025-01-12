@@ -4,15 +4,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const PORT = 3000;
-const { postOfflineActivity } = require('./public/js/offlineActivity_db');
+
+const { postOfflineActivity, listOfflineActivity, deleteOfflineActivity, updateOfflineActivity } = require('./public/js/offlineActivity_db');
 const { postChild, listChildren, deleteChild, updateChild } = require('./public/js/child_db');
-const { postOnlineActivity } = require('./public/js/onlineActivity_db');
-const { listChild } = require('./public/js/child_db');
+const { postOnlineActivity, listOnlineActivity, deleteOnlineActivity, updateOnlineActivity  } = require('./public/js/onlineActivity_db');
 const { startTimer } = require('./public/js/timer_db');
-const { listOfflineActivity } = require('./public/js/offlineActivity_db');
-const { listOnlineActivity } = require('./public/js/onlineActivity_db');
-const { postDailyUsage } = require('./public/js/dailyUsage_db');
-const { getDailyUsage } = require('./public/js/dailyUsage_db');
+const { postDailyUsage, getDailyUsage } = require('./public/js/dailyUsage_db');
 
 // Middleware
 app.use(express.json());
@@ -31,7 +28,6 @@ app.post('/api/offline-activity', (req, res) => {
     });
 });
 
-
 // API endpoint to list offline activity records
 app.get('/api/list-offlineActivity', (req, res) => {
 
@@ -42,6 +38,34 @@ app.get('/api/list-offlineActivity', (req, res) => {
         res.status(statusCode).send(result);
     });
 });
+
+
+
+app.delete('/api/delete-offlineActivity/:id', (req, res) => {
+    const id = req.params.id;
+
+    deleteOfflineActivity(id, (err, result, statusCode) => {
+        if (err) {
+            return res.status(500).send('Error deleting Offline Activity record.');
+        }
+        res.status(statusCode).send(result);
+    });
+});
+
+app.put('/api/update-offlineActivity/:id', (req, res) => {
+    const id = req.params.id;
+    const activity = req.body;
+
+    updateOfflineActivity(id, activity, (err, result, statusCode) => {
+        if (err) {
+            return res.status(500).send({
+                "message": "Error updating offline activity"
+            });
+        }
+        res.status(statusCode).send(result);
+    });
+});
+
 
 
 
@@ -103,13 +127,39 @@ app.post('/api/online-activity', (req, res) => {
     });
 });
 
-
-// API endpoint to list online activity records
+// list
 app.get('/api/list-onlineActivity', (req, res) => {
 
     listOnlineActivity((err, result, statusCode) => {
         if (err) {
             return res.status(500).send('Error getting Online Activity records.');
+        }
+        res.status(statusCode).send(result);
+    });
+});
+
+//
+app.delete('/api/delete-onlineActivity/:id', (req, res) => {
+    const id = req.params.id;
+
+    deleteOnlineActivity(id, (err, result, statusCode) => {
+        if (err) {
+            return res.status(500).send('Error deleting Online Activity record.');
+        }
+        res.status(statusCode).send(result);
+    });
+});
+
+// update online activity
+app.put('/api/update-onlineActivity/:id', (req, res) => {
+    const id = req.params.id;
+    const activity = req.body;
+
+    updateOnlineActivity(id, activity, (err, result, statusCode) => {
+        if (err) {
+            return res.status(500).send({
+                "message": "Error updating online activity"
+            });
         }
         res.status(statusCode).send(result);
     });

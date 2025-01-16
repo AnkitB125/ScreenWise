@@ -10,6 +10,7 @@ const { postChild, listChildren, deleteChild, updateChild } = require('./public/
 const { postOnlineActivity, listOnlineActivity, deleteOnlineActivity, updateOnlineActivity  } = require('./public/js/onlineActivity_db');
 const { startTimer } = require('./public/js/timer_db');
 const { postDailyUsage, getDailyUsage } = require('./public/js/dailyUsage_db');
+const { getChildData } = require('./public/js/childDashboard_db');
 
 // Middleware
 app.use(express.json());
@@ -205,6 +206,20 @@ app.get('/api/get-daily-usage', (req, res) => {
             res.status(statusCode).send(result); // return null
             }
         }
+    });
+});
+
+
+//API  endpoint to get child data by ID for the dashboard
+app.get('/api/childdasboard/:id', async (req, res) => {
+    const id = req.params.id;
+
+    getChildData(id, (err, result, statusCode) => {
+        if (err) {
+            console.error('Error:', err);
+            return res.status(500).json({ message: 'Internal Server Error' });
+        }
+        res.status(statusCode).json(result);
     });
 });
 

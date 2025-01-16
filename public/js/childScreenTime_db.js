@@ -4,27 +4,16 @@ let collection = client.db('screenWise').collection('timer');
 async function getChildScreenTime(childName, callback) {
     try {
         // Find the child record by name
-        const child = await collection.findOne({ childName: childName });
+        const children = await collection.find({ childName: childName }).toArray();
 
-        if (child) {
-            // Assuming child contains onlineActivity and offlineActivity
-            const { onlineActivity, pointsUsed, minutesUsed, startDateTime, endDateTime } = child;
-
-            // Create a response object containing the relevant information
-            const response = {
-                childName: child.childName,
-                onlineActivity,
-                pointsUsed,
-                minutesUsed,
-                startDateTime,
-                endDateTime
-            };
-
+        if (children) {
+            
+          
             // Return the response with a success status
-            return callback(null, response, 200);
+            return callback(null, children, 200);
         } else {
             // Return "Child not found" with a 404 status
-            return callback(null, "Child not found", 404);
+            return callback(null, [], 404);
         }
     } catch (err) {
         // Handle any database or runtime errors

@@ -105,6 +105,12 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.href='listOnlineActivity.html';
         });
     };
+    const childDashboard = document.getElementById('btnChildDashboard');
+    if (childDashboard) {    
+        childDashboard.addEventListener('click', () => {
+            window.location.href='childDashboard.html';
+        });
+    };
 
 });
 

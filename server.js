@@ -11,6 +11,7 @@ const { postOnlineActivity, listOnlineActivity, deleteOnlineActivity, updateOnli
 const { startTimer } = require('./public/js/timer_db');
 const { postDailyUsage, getDailyUsage } = require('./public/js/dailyUsage_db');
 const { getChildData } = require('./public/js/childDashboard_db');
+const { getChildScreenTime } = require('./public/js/childScreenTime_db');
 
 // Middleware
 app.use(express.json());
@@ -222,6 +223,20 @@ app.get('/api/childdasboard/:id', async (req, res) => {
         res.status(statusCode).json(result);
     });
 });
+//API  endpoint to get child screen usage time usage
+app.get('/api/screentimeusage', (req, res) => {
+    const childName = req.query.childName;
+
+
+    getChildScreenTime(childName, (err, result, statusCode) => {
+        const result = childRecords.find(record => record.childName === childName);
+        if (err) {
+            console.error('Error:', err);
+            return res.status(404).json({ message: 'Child not found' });
+        }
+        res.status(statusCode).json(result);
+    });
+  });
 
 
 // Start the server

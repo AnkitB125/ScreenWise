@@ -7,16 +7,16 @@ let collection = client.db('screenWise').collection('child');
 async function postChild(child, callback) {
     try {
         // First check if child already exists so that error message can be displayed
-        // const existingChild = await collection.findOne({ childNameText: { $eq: child.childNameText}}); 
-        // if(existingChild) {
-        //     response = "Child " + child.childName + " already exists.";  
-        //     return callback(null, response, 409);
 
-        // } else {
 
-        // };
+        const existingChild = await collection.findOne({ childNameText: { $eq: child.childNameText}}); 
+        if(existingChild) {
+            response = "Child " + child.childName + " already exists.";  
+            return callback(null, response, 409);
+
+        }
         const insertedRow = await collection.insertOne(child);
-        response = 'Child record ' + insertedRow.insertedId + ' inserted for ' + child.childName;
+        response = `Child ${child.childName} created successfully`; ;
         return callback(null, response, 201);
     } catch (err) {
         return callback(err);

@@ -112,5 +112,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
+
+const childScreenTime = document.getElementById('btnChildScreenTime');
+    if (childScreenTime) {    
+        childScreenTime.addEventListener('click', () => {
+            window.location.href='childScreenTime.html';
+        });
+    };
+
 });
 

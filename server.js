@@ -229,11 +229,11 @@ app.get('/api/screentimeusage', (req, res) => {
 
 
     getChildScreenTime(childName, (err, result, statusCode) => {
-        const result = childRecords.find(record => record.childName === childName);
-        if (err) {
-            console.error('Error:', err);
-            return res.status(404).json({ message: 'Child not found' });
-        }
+        // const result = childRecords.find(record => record.childName === childName);
+        // if (err) {
+        //     console.error('Error:', err);
+        //     return res.status(404).json({ message: 'Child not found' });
+        // }
         res.status(statusCode).json(result);
     });
   });

@@ -1,6 +1,6 @@
 const { MongoClient, ServerApiVersion } = require("mongodb");
  
-// Replace the placeholder with your Atlas connection string
+// establish connection to local mongoDB server 
 const uri = "mongodb://localhost:27017/";
 
 const client = new MongoClient(uri, {

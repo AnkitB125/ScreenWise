@@ -153,7 +153,7 @@ async function getChildList() {
     const selectElement = document.getElementById('childNameSelect');
     if (selectElement) {
         try {
-            const response = await fetch('/api/children', {
+            const response = await fetch('/api/childList', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

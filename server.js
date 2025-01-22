@@ -6,7 +6,7 @@ const app = express();
 const PORT = 3000;
 
 const { postOfflineActivity, listOfflineActivity, deleteOfflineActivity, updateOfflineActivity } = require('./public/js/offlineActivity_db');
-const { postChild, listChildren, deleteChild, updateChild } = require('./public/js/child_db');
+const { postChild, listChildList, deleteChild, updateChild } = require('./public/js/child_db');
 const { postOnlineActivity, listOnlineActivity, deleteOnlineActivity, updateOnlineActivity  } = require('./public/js/onlineActivity_db');
 const { startTimer } = require('./public/js/timer_db');
 const { postDailyUsage, getDailyUsage } = require('./public/js/dailyUsage_db');
@@ -84,17 +84,17 @@ app.post('/api/child', (req, res) => {
 });
 
 // API endpoint to add child record
-app.get('/api/children', (req, res) => {
+app.get('/api/childList', (req, res) => {
 
-    listChildren((err, result, statusCode) => {
+    listChildList((err, result, statusCode) => {
         if (err) {
-            return res.status(500).send('Failed to get children.');
+            return res.status(500).send('Failed to get child record.');
         }
         res.status(statusCode).send(result);
     });
 });
 // API endpoint to delete child record
-app.delete('/api/children/:id', (req, res) => {
+app.delete('/api/childList/:id', (req, res) => {
     const childId = req.params.id;
 
     deleteChild(childId, (err, result, statusCode) => {
@@ -105,7 +105,7 @@ app.delete('/api/children/:id', (req, res) => {
     });
 });
 
-app.put('/api/children/:id', (req, res) => {
+app.put('/api/childList/:id', (req, res) => {
     const childId = req.params.id;
     const child = req.body;
     updateChild(childId, child, (err, result, statusCode) => {

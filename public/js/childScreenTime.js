@@ -45,7 +45,7 @@ async function fetchChildRecords() {
 async function fetchChilds() {
   // Fetch child records on form submit
 
-  const response = await fetch('/api/children', {
+  const response = await fetch('/api/childList', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

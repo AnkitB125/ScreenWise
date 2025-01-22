@@ -37,11 +37,11 @@ async function getChild(childName, callback) {
     }
 }
 
-// Function to list all children
-async function listChildren(callback) {
+// Function to list all child records
+async function listChildList(callback) {
     try {
-        const children = await collection.find({}).toArray();
-        return callback(null, children, 200);
+        const childList = await collection.find({}).toArray();
+        return callback(null, childList, 200);
     } catch (err) {
         return callback(err);
     }
@@ -88,7 +88,7 @@ async function deleteChild(childId, callback) {
 module.exports = {
     postChild,
     getChild,
-    listChildren,
+    listChildList,
     updateChild,
     deleteChild
 };

@@ -47,10 +47,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    const listChildren = document.getElementById('listChildren');
-    if (listChildren) {    
-        listChildren.addEventListener('click', () => {
-            window.location.href='list_children.html';
+    const listChildList = document.getElementById('listChildList');
+    if (listChildList) {    
+        listChildList.addEventListener('click', () => {
+            window.location.href='listChild.html';
         });
     };
 

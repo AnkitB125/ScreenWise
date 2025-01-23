@@ -83,12 +83,12 @@ app.post('/api/child', (req, res) => {
     });
 });
 
-// API endpoint to add child record
+// API endpoint to add child record list
 app.get('/api/childList', (req, res) => {
 
     listChildList((err, result, statusCode) => {
         if (err) {
-            return res.status(500).send('Failed to get child record.');
+            return res.status(500).send('Failed to get child list record.');
         }
         res.status(statusCode).send(result);
     });
@@ -212,7 +212,7 @@ app.get('/api/get-daily-usage', (req, res) => {
 
 
 //API  endpoint to get child data by ID for the dashboard
-app.get('/api/childdasboard/:id', async (req, res) => {
+app.get('/api/childDashboard/:id', async (req, res) => {
     const id = req.params.id;
 
     getChildData(id, (err, result, statusCode) => {
@@ -223,20 +223,21 @@ app.get('/api/childdasboard/:id', async (req, res) => {
         res.status(statusCode).json(result);
     });
 });
+
 //API  endpoint to get child screen usage time usage
 app.get('/api/screentimeusage', (req, res) => {
     const childName = req.query.childName;
 
-
     getChildScreenTime(childName, (err, result, statusCode) => {
-        // const result = childRecords.find(record => record.childName === childName);
-        // if (err) {
-        //     console.error('Error:', err);
-        //     return res.status(404).json({ message: 'Child not found' });
-        // }
+// const record was const result, which threww error as argument in same block function. Unsure of purpose/link yet         
+        const record = childRecords.find(record => record.childName === childName);
+         if (err) {
+             console.error('Error:', err);
+             return res.status(404).json({ message: 'Child not found' });
+         }
         res.status(statusCode).json(result);
     });
-  });
+});
 
 
 // Start the server

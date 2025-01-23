@@ -47,9 +47,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    const listChildList = document.getElementById('listChildList');
-    if (listChildList) {    
-        listChildList.addEventListener('click', () => {
+    const btnChildList = document.getElementById('btnChildList');
+    if (btnChildList) {    
+        btnChildList.addEventListener('click', () => {
             window.location.href='listChild.html';
         });
     };

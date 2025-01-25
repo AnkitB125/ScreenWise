@@ -1,5 +1,41 @@
-// Insert code to start the timer, stop the timer and add timer usage record to the database
+// Global Variables
+const socket = io();
 
+// Points and Calculations
+const startDateTime = document.getElementById('startDateTime');
+const minutesPerPoint = document.getElementById('minutesPerPoint');
+const dailyAllowance = document.getElementById('dailyAllowancePoints');
+const dailyLimit = document.getElementById('dailyLimitPoints');
+const defaultPointsPerHour = document.getElementById('defaultPointsPerHour');
+const pointsPerHour = document.getElementById('pointsPerHour');
+const pointsAvailable = document.getElementById('pointsAvailable');
+const onlineActivityPointsPerHour = document.getElementById('onlineActivityPointsPerHour');
+const offlineActivityPointsPerHour = document.getElementById('offlineActivityPointsPerHour');
+const offlineActivityPointsPerHourText = document.getElementById('offlineActivityPointsPerHourText');
+
+// Timer forms
+const timerFormDisplay = document.getElementById('timerFormDisplay');
+const timerForm = document.getElementById('timerForm');
+const timerStatus = document.getElementById('timerStatus');
+const timerRunning = document.getElementById('timerRunning');
+const timerDisplay = document.getElementById('timerDisplay');
+const rowNewTimer = document.getElementById('rowNewTimer');
+const rowStopTimer = document.getElementById('rowStopTimer');
+
+
+// UI Fields
+const childName = document.getElementById('childNameSelect');
+const onlineActivity = document.getElementById('onlineActivityNameSelect');
+const offlineActivity = document.getElementById('offlineActivityNameSelect');
+
+
+// Function to disconnect the socket
+function disconnectSocket() {
+    socket.disconnect(); // Disconnect the socket
+    console.log('User disconnected');
+};
+
+/*
 // Function to get current date in specified timezone (AEDT) as a date-only string
 function getCurrentTime() {
     // Create a new Date object for the current date and time
@@ -28,7 +64,7 @@ function getCurrentTime() {
 
     // Create a date-only string in YYYY-MM-DD hh:mm 
     return `${year}-${month}-${day} ${hour}:${minute}`
-};
+}; */
 
 
 function calculateTimeDifference(dateString1, dateString2) {
@@ -53,33 +89,30 @@ function calculatePointsUsed(minsUsed, pointsPerHour) {
         return(minsUsed/60*pointsPerHour);
     } else {
         //get default points from child record
-        const minutesPerPoint = document.getElementById('minutesPerPoint').value;
-        const defaultPointsPerHour = 60/minutesPerPoint;
-        return(minsUsed/60*defaultPointsPerHour);
+        return(minsUsed/60*defaultPointsPerHour.value);
     }
 };
 
-
-
-//Display available points for selected child (need to adjust this to get remaining points rather than daily allowance, placeholder for now)
+/*
+//Display available points for selected child 
 async function displayPointsAvailable(optionSelected) {
-    const pointsDisplay = document.getElementById('pointsAvailable');
-    const minutesPerPoint = document.getElementById('minutesPerPoint');
-    const dailyAllowance = document.getElementById('dailyAllowancePoints');
+    
 
     if (optionSelected.selectedIndex>0) {
         // Retrieve the corresponding numeric value from the pointsAvailable attribute
         const selectedOption = optionSelected.options[optionSelected.selectedIndex];
         let pointsAvailableToday = selectedOption ? selectedOption.getAttribute('dailyAllowancePoints') : '';
-        
+        const childNameText = selectedOption.value.toLowerCase();
+
         // Check if daily usage document exists, return current balance if it does
         const todayDate = getCurrentTime();
         const usageData = {
-            childNameText: selectedOption.value.toLowerCase(),
+            childNameText: childNameText,
             startDate: todayDate.substring(0, 10)
         };
         // Construct query parameters
         const queryParams = new URLSearchParams(usageData).toString();
+
         try {
             // Get daily usage record for selected child
             const response = await fetch(`/api/get-daily-usage?${queryParams}`, {
@@ -92,11 +125,13 @@ async function displayPointsAvailable(optionSelected) {
             if (dailyUsagePointsAvailable) {
                 pointsAvailableToday = dailyUsagePointsAvailable;
             } 
-
             const minsPerPoint = selectedOption ? selectedOption.getAttribute('minutesPerPoint') : '';
-            pointsDisplay.innerText = 'Points Available Today : ' + parseFloat(pointsAvailableToday).toFixed(2);
+            pointsAvailable.innerText = 'Points Available Today : ' + parseFloat(pointsAvailableToday).toFixed(2);
             minutesPerPoint.value = minsPerPoint;
             dailyAllowance.value = pointsAvailableToday;
+            // Calculate default points per hour, use if no online activity has been selected
+            const defaultPointsPerHourVal = 60/minutesPerPoint.value;
+            defaultPointsPerHour.value = defaultPointsPerHourVal;
 
         } catch (error) {
             console.error('Fetch error:', error);
@@ -107,7 +142,7 @@ async function displayPointsAvailable(optionSelected) {
 
         
     } else {
-        pointsDisplay.innerText = '';
+        pointsAvailable.innerText = '';
     };
 
 };
@@ -115,18 +150,24 @@ async function displayPointsAvailable(optionSelected) {
 
 // Display selected online activity points per hour
 function displayOnlineActivityPointsPerHour(optionSelected) {
-    
-    const pointsDisplay = document.getElementById('onlineActivityPointsPerHour');
-    
+        
     if (optionSelected.selectedIndex>0) {
         // Retrieve the corresponding numeric value from the pointsAvailable attribute
         const selectedOption = optionSelected.options[optionSelected.selectedIndex];
-        const pointsPerHour = selectedOption ? selectedOption.getAttribute('pointsPerHour') : '';
-        document.getElementById('pointsPerHour').value = pointsPerHour;
-        pointsDisplay.innerText = 'Points per hour for ' + optionSelected.value + ': ' + pointsPerHour;
+        const pointsPerHourVal = selectedOption ? selectedOption.getAttribute('pointsPerHour') : '';
+        pointsPerHour.value = pointsPerHourVal;
+        
+        // Calculate how much time left in minutes for this activity
+        mins = (dailyAllowance.value/pointsPerHourVal*60).toFixed(0);
+
+        // Display activity points per hour and minutes available
+        onlineActivityPointsPerHour.innerText = 'Points per hour for ' + optionSelected.value + ': ' + pointsPerHourVal + '. Maximum ' + mins + ' minutes available for this activity.';
+
     } else {
-        pointsDisplay.innerText = '';
+        pointsAvailable.innerText = '';
     };
+
+   
 
 };
 
@@ -134,98 +175,24 @@ function displayOnlineActivityPointsPerHour(optionSelected) {
 // Display selected offline activity points per hour
 function displayOfflineActivityPointsPerHour(optionSelected) {
 
-    const pointsDisplay = document.getElementById('offlineActivityPointsPerHour');
+    
 
     if (optionSelected.selectedIndex>0) {
         // Retrieve the corresponding numeric value from the pointsAvailable attribute
         const selectedOption = optionSelected.options[optionSelected.selectedIndex];
-        const pointsPerHour = selectedOption ? selectedOption.getAttribute('pointsPerHour') : '';
-        pointsDisplay.innerText = 'Points per hour earned for ' + optionSelected.value + ': ' + pointsPerHour;
+        const pointsPerHourVal = selectedOption ? selectedOption.getAttribute('pointsPerHour') : '';
+        offlineActivityPointsPerHour.innerText = 'Points per hour earned if you ' + optionSelected.value.toLowerCase() + ': ' + pointsPerHourVal;
     } else {
-        pointsDisplay.innerText = '';
+        offlineActivityPointsPerHour.innerText = '';
     };
 
 };
 
-
-// Populate list of childName options for selection
-async function getChildList() {
-    const selectElement = document.getElementById('childNameSelect');
-    if (selectElement) {
-        try {
-            const response = await fetch('/api/childList', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-            const childList = await response.json();
-        
-
-            // Add the options
-            childList.forEach(child => {
-                const option = document.createElement('option');
-                option.value = child.childName; 
-                option.setAttribute('dailyAllowancePoints',child.dailyAllowancePoints);
-                option.setAttribute('minutesPerPoint',child.minutesPerPoint);
-                option.textContent = child.childName; 
-                selectElement.appendChild(option); // Append the option to the select element
-            });
-    
-            // Initialize the select element using Materialize CSS
-            var elems = document.querySelectorAll('select');
-            var instances = M.FormSelect.init(elems);
-
-        } catch (error) {
-            console.error('Fetch error:', error);
-            showAlert('Network error: ' + error.message, true);
-        };
-    };
-};
-
-
-// Populate list of offline activity options for selection
-async function getOfflineActivityList() {
-    const selectElement = document.getElementById('offlineActivityNameSelect');
-    if (selectElement) {
-        try {
-            // Get list from db
-            const response = await fetch('/api/list-offlineActivity', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-            const offlineActivityList = await response.json();
-
-            while (selectElement.options.length > 1) {
-                selectElement.remove(1); // Remove from index 1 to keep the default option
-            }
-
-            // Add the options
-            offlineActivityList.forEach(offlineActivity => {
-                const option = document.createElement('option');
-                option.value = offlineActivity.offlineActivityName; 
-                option.setAttribute('pointsPerHour',offlineActivity.pointsPerHour);
-                option.textContent = offlineActivity.offlineActivityName + ' (' + offlineActivity.pointsPerHour + ' points per hour)'; 
-                selectElement.appendChild(option); // Append the option to the select element
-            });
-        
-            // Initialize the select element using Materialize CSS
-            var elems = document.querySelectorAll('select');
-            var instances = M.FormSelect.init(elems);
-
-        } catch (error) {
-               console.error('Fetch error:', error);
-               showAlert('Network error: ' + error.message, true);
-        };
-    };
-};
 
 
 // Populate list of online activity options for selection
 async function getOnlineActivityList() {
-    const selectElement = document.getElementById('onlineActivityNameSelect');
+    const selectElement = onlineActivity;
     if (selectElement) {
         try {
             // Get list from db
@@ -256,58 +223,73 @@ async function getOnlineActivityList() {
         };
     };
 };
-
+*/
 document.addEventListener('DOMContentLoaded', () => {
-
-    //Focus on first input field once loaded
-    //const firstField = document.getElementById('childNameSelect');
-    //firstField.focus(); 
     
-
     //Populate select lists
     getChildList();
     getOfflineActivityList();
     getOnlineActivityList();
 
-
-    // Timer forms
-    const timerFormDisplay = document.getElementById('timerFormDisplay');
-    const timerForm = document.getElementById('timerForm');
+    // Hide timer running and new timer button when form loads
     timerFormDisplay.style.display="none";
-    const timerStatus = document.getElementById('timerStatus');
-
-    
+    rowNewTimer.style.display="none";
 
     // Add event listener to Start the Timer
     if (timerForm) {
         timerForm.addEventListener('submit', async (event) => {
             event.preventDefault(); // Prevent default form submission
             
-            const pointsLeft = document.getElementById('dailyAllowancePoints').value;
-            const childName = document.getElementById('childNameSelect').value;
-
-
+            const pointsLeft = dailyAllowance.value;
+            // Use default points per hour if no online activity selected
+            let pointsPerHourVal = defaultPointsPerHour.value;
+            if (pointsPerHour) {
+                pointsPerHourVal = pointsPerHour.value;
+            }
             if (childName != '') { 
-                if(parseInt(pointsLeft)>0) {
-                    const startDateTime = document.getElementById('startDateTime');
+                if(parseFloat(pointsLeft)>0) {
                     startDateTime.value = getCurrentTime();
                     timerStatus.innerText = 'active';
+                    timerRunning.innerText = 'Timer Running';
+                    timerDisplay.innerText = 'Minutes Used: 0, Points used: 0'
+
                     showAlert('Timer started at ' + startDateTime.value);
 
-                    // Get values from the editable form
-                    const onlineActivityName = document.getElementById('onlineActivityNameSelect').value;
-                    const offlineActivityName = document.getElementById('offlineActivityNameSelect').value;
-                    const pointsAvailable = document.getElementById('pointsAvailable').innerText;
-                    const onlineActivityPointsPerHour = document.getElementById('onlineActivityPointsPerHour').innerText;
-                    const offlineActivityPointsPerHour = document.getElementById('offlineActivityPointsPerHour').innerText;
+                    // Set variables to use for 10 minute warning
+                    const pointsTenMinutes = pointsPerHourVal/6; 10
+                    const pointsWarning = pointsLeft-pointsTenMinutes; 
+
+                    // connect to the socket to keep track of minutes used
+                    socket.on('minutes', (mins) => {
+                        const timerDisplay = document.getElementById('timerDisplay'); 
+                    
+                        if (timerDisplay) {
+                            points = mins*pointsPerHourVal/60;
+                            timerDisplay.innerText = `Minutes used: ${mins}, Points used: ${points.toFixed(2)}`; 
+                            if (points>=pointsWarning) {
+                                const minsLeft = (pointsLeft / pointsPerHourVal * 60) - mins;
+                                if (minsLeft>0) {
+                                    // Still up to 10 minutes left
+                                    showAlertPopup(`WARNING: ${minsLeft.toFixed(0)} minute(s) screen time left`);
+                                } else {
+                                    // Time is up
+                                    let offlineActivityMsg = '';
+                                    if (offlineActivity.value) {
+                                        offlineActivityMsg = `\n\n It's time to ${offlineActivity.value.toUpperCase()} :-)`;
+                                    };
+                                    showAlertPopup(`Time's up! Your screen time is finished for today. If you keep using it, you'll have less time tomorrow.` + offlineActivityMsg);
+                                }
+                            }
+                        }
+                    });
 
                     // Populate the display form
-                    document.getElementById('childNameDisplay').value = childName;
-                    document.getElementById('onlineActivityNameDisplay').value = onlineActivityName;
-                    document.getElementById('offlineActivityNameDisplay').value = offlineActivityName;
-                    document.getElementById('pointsAvailableDisplay').innerText = pointsAvailable;
-                    document.getElementById('onlineActivityPointsPerHourDisplay').innerText = onlineActivityPointsPerHour;
-                    document.getElementById('offlineActivityPointsPerHourDisplay').innerText = offlineActivityPointsPerHour;
+                    document.getElementById('childNameDisplay').value = childName.value;
+                    document.getElementById('onlineActivityNameDisplay').value = onlineActivity.value;
+                    document.getElementById('offlineActivityNameDisplay').value = offlineActivity.value;
+                    document.getElementById('pointsAvailableDisplay').innerText = pointsAvailable.innerText;
+                    document.getElementById('onlineActivityPointsPerHourDisplay').innerText = onlineActivityPointsPerHour.innerText;
+                    document.getElementById('offlineActivityPointsPerHourDisplay').innerText = offlineActivityPointsPerHourText.innerText;
 
                     // Initialize Materialize labels
                     //M.updateTextFields();
@@ -332,11 +314,6 @@ document.addEventListener('DOMContentLoaded', () => {
         timerFormDisplay.addEventListener('submit', async (event) => {
             event.preventDefault(); // Prevent default form submission
 
-            const startDateTime = document.getElementById('startDateTime');
-            const childName = document.getElementById('childNameSelect').value;
-            const onlineActivity = document.getElementById('onlineActivityNameSelect');
-            const offlineActivity = document.getElementById('offlineActivityNameSelect');
-
             // Online/offline activity selection is optional, populate if it has been selected
             let onlineActivityName='';
             let offlineActivityName='';
@@ -347,22 +324,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 offlineActivityName = offlineActivity.value;
             };
 
-            const dailyAllowancePoints = document.getElementById('dailyAllowancePoints').value;
-
             // Calculate screen time usage
             const endTime = getCurrentTime(); 
             const minsUsed = calculateTimeDifference(startDateTime.value, endTime); 
-            const pointsPerHour = document.getElementById('pointsPerHour').value;
-            const pointsUsed = calculatePointsUsed(minsUsed, pointsPerHour);
+            const pointsUsed = calculatePointsUsed(minsUsed, pointsPerHour.value);
   
             // Save timer data
             document.getElementById('endDateTime').value = endTime;
 
             const timerData = {
-                childName: childName,
+                childName: childName.value,
                 onlineActivityName: onlineActivityName,
                 offlineActivityName: offlineActivityName,
-                startDateTime: document.getElementById('startDateTime').value,
+                startDateTime: startDateTime.value,
                 endDateTime: endTime,
                 minsUsed: minsUsed,
                 pointsUsed: pointsUsed
@@ -395,12 +369,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Update available points
                     const startDate = startDateTime.value.substring(0, 10);
                     const dailyUsageData = {
-                        childName: childName,
+                        childName: childName.value,
                         startDate: startDate,
                         pointsUsed: pointsUsed,
                         minsUsed: minsUsed,
-                        pointsAvailable: +dailyAllowancePoints-pointsUsed,//will only be used for new dailyUsage records
-                        childNameText: childName.toLowerCase()
+                        pointsAvailable: +dailyAllowance.value-pointsUsed,//will only be used for new dailyUsage records
+                        pointsLimit: dailyLimit.value,
+                        pointsEarnt: 0,
+                        childNameText: childName.value.toLowerCase()
                     };
                 
                     // Post timer record to database
@@ -415,10 +391,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     // Display response
                     if (usageResponse.ok) {
-                        // Hide display form and show/reset editable form
-                        timerFormDisplay.style.display = 'none';
-                        timerForm.style.display = 'block';
+                        //Disconnect socket timer
+                        disconnectSocket();
+                        //Show timer complete form
+                        rowStopTimer.style.display = 'none';
+                        rowNewTimer.style.display = 'block';
                         timerStatus.innerText = '';
+                        timerRunning.innerText = '';
+                        timerDisplay.innerText = '';
                         timerForm.reset();
                     };
                             
@@ -428,4 +408,5 @@ document.addEventListener('DOMContentLoaded', () => {
                     }   
         });
     }
+
 });

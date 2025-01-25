@@ -1,5 +1,4 @@
 let client = require('./dbConnection');
-let { ObjectId } = require('mongodb');
 
 let collection = client.db('screenWise').collection('child');
 
@@ -7,21 +6,36 @@ let collection = client.db('screenWise').collection('child');
 async function postChild(child, callback) {
     try {
         // First check if child already exists so that error message can be displayed
-
-
         const existingChild = await collection.findOne({ childNameText: { $eq: child.childNameText}}); 
         if(existingChild) {
             response = "Child " + child.childName + " already exists.";  
             return callback(null, response, 409);
-
-        }
-        const insertedRow = await collection.insertOne(child);
-        response = `Child ${child.childName} created successfully`; ;
-        return callback(null, response, 201);
+        } else {
+            const insertedRow = await collection.insertOne(child);
+            response = 'Child record ' + child.childName + ' added. ';
+            return callback(null, response, 201);
+        };
     } catch (err) {
         return callback(err);
-    }
+    };
 };
+
+// Function to list all children
+async function listChild(callback) {
+    try { 
+        const listValues = await collection.find({}, { projection: {childName: 1, dailyAllowancePoints: 1, minutesPerPoint: 1, dailyLimitPoints: 1 } })
+            .sort({ childName: 1 })
+            .toArray();
+        if(listValues) {
+            return callback(null, listValues, 201);
+        } else {
+            return callback(null, 'No child values found', 404);
+        }
+    } catch (err) {
+        return callback(err);
+    };
+};
+
 
 // Function to get a child by name
 async function getChild(childName, callback) {
@@ -35,7 +49,11 @@ async function getChild(childName, callback) {
     } catch (err) {
         return callback(err);
     }
-}
+};
+
+///////////////////////////////////
+let { ObjectId } = require('mongodb');
+
 
 // Function to list all child records
 async function listChildList(callback) {
@@ -84,11 +102,15 @@ async function deleteChild(childId, callback) {
     }
 }
 
+
+
 // Exporting the functions
 module.exports = {
     postChild,
     getChild,
+    listChild,
+    //////
     listChildList,
     updateChild,
-    deleteChild
+    deleteChild,
 };

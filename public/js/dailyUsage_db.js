@@ -12,15 +12,23 @@ async function postDailyUsage(dailyUsage, callback) {
             startDate: { $eq: dailyUsage.startDate}
         }); 
         if(existingDailyUsage) {
-            // Update
+            // Can only earn points up to the maximimum daily limit
+            let maxEarnt = parseFloat(existingDailyUsage.pointsLimit) - existingDailyUsage.pointsUsed - existingDailyUsage.pointsAvailable;
+            if(parseFloat(dailyUsage.pointsEarnt) < maxEarnt) {
+                maxEarnt = dailyUsage.pointsEarnt;
+            };
+            // Reduce by points used or increment by points earnt (with max limit)
+            const pointsIncrement = (-1 * dailyUsage.pointsUsed) + maxEarnt;
             const update = { 
                 $inc: {
                     //Increment points used
                     pointsUsed: dailyUsage.pointsUsed,
-                    //Reduce points available
-                    pointsAvailable: -1 * dailyUsage.pointsUsed,
                     //Increment minutes used
-                    minsUsed: dailyUsage.minsUsed
+                    minsUsed: dailyUsage.minsUsed,
+                    //Increment points earnt
+                    pointsEarnt: dailyUsage.pointsEarnt,
+                    //Reduce or increase points available
+                    pointsAvailable: pointsIncrement,
                 }
             }; 
             const result = await collection.updateOne({ _id: existingDailyUsage._id }, update);
@@ -37,21 +45,27 @@ async function postDailyUsage(dailyUsage, callback) {
     };
 };
 
+
 // Function to get daily usage record
 async function getDailyUsage(req, callback) {
 
     const { childNameText, startDate } = req.query;
-
     try {
         // Check if daily usage record exists
         const existingDailyUsage = await collection.findOne({ 
             childNameText: { $eq: childNameText},
             startDate: { $eq: startDate}
         }); 
+        
         if(existingDailyUsage) {
-            // Return
+            // Return points available today
             const response = existingDailyUsage.pointsAvailable;
-            return callback(null, response, 201);
+            if(response<=0) {
+                return callback(null, 0, 201);
+            } else {
+                return callback(null, response, 201);
+            }
+   
         } else {
             // Return null
             return callback(null, null, 201);

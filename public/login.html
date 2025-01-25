@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <img class="m-0 p-0" width="100%" src="images/banner.png" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ScreenWise</title>
+    <meta name="description" content="ScreenWise Screen Time Tracker">
+    <meta name="author" content="SIT725 Students - KT, PJ, AB and PH">
+    <meta property="og:title" content="ScreenWise">
+    <meta property="og:type" content="website">
+    <meta property="og:description" content="ScreenWise Main Menu">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Custom Style Sheet-->
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        a.btn {
+            width: 300px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="space-above-50">
+
+    </div>
+    <main class="main-body">
+        <div class="container">
+            <div class="row">
+                <div class="col s12 center-align">
+                    <form id="login-form">
+                        <div class="input-field">
+                            <input id="username" type="text" class="validate">
+                            <label for="username">Username</label>
+                        </div>
+                        <div class="input-field">
+                            <input id="password" type="password" class="validate">
+                            <label for="password">Password</label>
+                        </div>
+                        <button style="width: 300px;" class="btn waves-effect waves-light" type="submit">
+                            Login
+                            <i class="material-icons right">send</i>
+                        </button>
+                    </form>
+                </div>
+                <div id="response-message">
+
+                </div>
+            </div>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <script src="js/scripts.js"></script>
+        <script>
+            $(document).ready(function () {
+                $("#login-form").submit(function (e) {
+                    e.preventDefault(); // Prevent default form submission
+                    if (!$("#username").val() || !$("#password").val()) {
+                        $("#response-message").html('<p style="color: red;">Please fill in all fields</p>');
+                        return;
+                    }
+                    // Validate password length and complexity
+                    if ($("#password").val().length < 8) {
+                        $("#response-message").html('<p style="color: red;">Password must be at least 8 characters long</p>');
+                        return;
+                    }
+                    $("#response-message").html('');
+                    const formData = {
+                        username: $("#username").val(),
+                        password: $("#password").val(),
+                    };
+
+                    $.ajax({
+                        url: "/login-user",
+                        method: "POST",
+                        data: formData,
+                        success: function () {
+                            $("#response-message").html(`<p style="color: green;">Login successful! Redirecting...</p>`);
+                            setTimeout(() => window.location.href = "/indexAdmin.html", 2000); // Redirect to admin page
+                        },
+                        error: function (xhr) {
+                            $("#response-message").html(`<p style="color: red;">${xhr.responseText}</p>`);
+                        },
+                    });
+                });
+            });
+        </script>
+</body>
+
+</html>

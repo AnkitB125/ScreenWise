@@ -4,8 +4,11 @@ const socketIo = require('socket.io');
 const os = require('os');
 
 const bodyParser = require('body-parser');
+const childRouter = require('./routes/childRouter');
+
 const app = express();
 const PORT = 3000;
+
 
 //Socket Timer
 const server = http.createServer(app);
@@ -14,13 +17,17 @@ const io = socketIo(server);
 //Database functions
 const { postOfflineActivity, listOfflineActivity  } = require('./public/js/offlineActivity_db');
 const { postLogOfflineActivity } = require('./public/js/logOfflineActivity_db')
-const { postChild, listChild } = require('./public/js/child_db');
+//const { listChild } = require('./models/child_db');
 const { postOnlineActivity } = require('./public/js/onlineActivity_db');
 const { startTimer } = require('./public/js/timer_db');
 const { listOnlineActivity } = require('./public/js/onlineActivity_db');
 const { postDailyUsage, getDailyUsage  } = require('./public/js/dailyUsage_db');
+//const childController = require('./controllers/childController'); // Import the controller
+
+
+
 /////
-const { listChildList, deleteChild, updateChild} = require('./public/js/child_db');
+const { listChildList, deleteChild, updateChild} = require('./models/child_db');
 const { deleteOfflineActivity, updateOfflineActivity } = require('./public/js/offlineActivity_db');
 const { deleteOnlineActivity, updateOnlineActivity } = require('./public/js/onlineActivity_db');
 
@@ -30,6 +37,10 @@ const { getChildData } = require('./public/js/childDashboard_db');
 // Middleware
 app.use(express.json());
 app.use(express.static('public')); // Serve static files from the public folder
+
+
+// Use the child router for child-related routes
+app.use('/api', childRouter); 
 
 
 // API endpoint to add offline activity
@@ -69,7 +80,7 @@ app.post('/api/log-offline-activity', (req, res) => {
     });
 });
 
-
+/*
 // API endpoint to add child record
 app.post('/api/child', (req, res) => {
     const child = req.body;
@@ -80,10 +91,16 @@ app.post('/api/child', (req, res) => {
         }
         res.status(statusCode).send(result);
     });
-});
+});*/
+// API endpoint to add child record, now using the controller
+//app.post('/api/child', childController.addChild);
+
+// API endpoint to list child records, for use in listbox fields in timer and earn points forms
+//app.get('/api/list-child', childController.listChildRecords);
 
 
 // API endpoint to list child records
+/*
 app.get('/api/list-child', (req, res) => {
 
     listChild((err, result, statusCode) => {
@@ -92,7 +109,7 @@ app.get('/api/list-child', (req, res) => {
         }
         res.status(statusCode).send(result);
     });
-});
+});*/
 
 
 // API endpoint to add online activity

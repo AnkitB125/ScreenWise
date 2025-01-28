@@ -284,14 +284,15 @@ app.put('/api/update-onlineActivity/:id', (req, res) => {
 
 
 //API  endpoint to get child data by ID for the dashboard
-app.get('/api/childDashboard/:id', async (req, res) => {
-    const id = req.params.id;
+app.post('/api/childDashboard', async (req, res) => {
+    const child = req.body.childName;
 
-    getChildData(id, (err, result, statusCode) => {
+    getChildData(child, (err, result, statusCode) => {
         if (err) {
             console.error('Error:', err);
             return res.status(500).json({ message: 'Internal Server Error' });
         }
+        console.log(result)
         res.status(statusCode).json(result);
     });
 });

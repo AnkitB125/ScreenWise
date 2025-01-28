@@ -26,8 +26,18 @@
         <div class="col s12 m6 offset-m3">
           <div class="card">
             <div class="card-content">
-              <span class="card-title">Child's Name</span>
-              <p id="childName"></p>
+              <div class="row">
+                <form class="col s12" id="childNameForm" method="post">
+                  <div class="row">
+                    <div class="input-field col s6">
+                      <i class="material-icons prefix">account_circle</i>
+                      <input id="child" type="text" class="validate" name="childName" placeholder="Enter Your Name">
+                    </div>
+                  </div>
+                  <button class="waves-effect waves-light btn" type="submit">Get Usage Data</button>
+                </form>
+              </div>
+                    
             </div>
           </div>
         </div>
@@ -37,8 +47,8 @@
       <div class="row">
         <div class="col s12">
           <div class="card">
-            <div class="card-content">
-              <span class="card-title">Usage Over Time</span>
+            <div class="card-content" id="overTime">
+              
               <canvas id="usageChart" width="400" height="200"></canvas>
             </div>
           </div>
@@ -51,8 +61,8 @@
           <div class="card">
             <div class="card-content">
               <span class="card-title">Offline Activity</span>
-              <ul id="offlineActivity" class="collection">
-                <!-- dynamically adding offline activities -->
+              <ul class="collection" id="offlineActivity">
+                <!-- Dynamically add offline activities -->
               </ul>
             </div>
           </div>

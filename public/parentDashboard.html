@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ScreenWise - Parent Usage Dashboard</title>
+    <meta name="description" content="ScreenWise Screen Time Tracker">
+    <meta name="author" content="SIT725 Students - KT, PJ, AB and PH">
+    <meta property="og:title" content="ScreenWise Parent Usage Dashboard">
+    <meta property="og:type" content="website">
+    <meta property="og:description" content="ScreenWise Parent Usage Dashboard">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!-- Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body>
+    <img class="responsive-img" width="100%" src="images/banner.png" />
+    <div class="container">
+      <h4 class="center-align">Parent Usage Dashboard</h4>
+  
+      <!-- Child's Name -->
+      <div class="row">
+        <div class="col s12 m6 offset-m3">
+          <div class="card">
+            <div class="card-content">
+              <div class="row">
+                <form class="col s12" id="childNameForm" method="post">
+                  <div class="row">
+                    <div class="input-field col s6">
+                        <div class="input-field col s12">
+                            <select id="childSelect">
+                              
+                            </select>
+                          </div>   
+                    </div>
+                  </div>
+                  <button class="waves-effect waves-light btn" type="submit">Get Usage Data</button>
+                </form>
+              </div>
+                    
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <table class="striped">
+        <thead>
+            <tr>
+                <th>Child Name</th>
+                <th>Date</th>
+                <th>Points Used</th>
+                <th>Points Available</th>
+                <th>Minutes Used</th>
+            </tr>
+        </thead>
+        <tbody id="data-table">
+            <!-- Data will be populated here -->
+        </tbody>
+    </table>
+
+    <div class="row">
+        <div class="col s12">
+          <div class="card">
+            <div class="card-content" id="overTime">
+              
+              <canvas id="usageChart" width="400" height="200"></canvas>
+            </div>
+          </div>
+        </div>
+    </div>
+      
+      
+  
+      
+       
+    </div>
+    
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <!-- Chart.js -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="js/parentDashboard.js"></script>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

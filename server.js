@@ -26,6 +26,7 @@ const { deleteOnlineActivity, updateOnlineActivity } = require('./public/js/onli
 
 const { getChildScreenTime} = require('./public/js/childScreenTime_db');
 const { getChildData } = require('./public/js/childDashboard_db');
+const { getChildUsage } = require('./public/js/parentDashboard_db');
 
 // Middleware
 app.use(express.json());
@@ -283,11 +284,24 @@ app.put('/api/update-onlineActivity/:id', (req, res) => {
 });
 
 
-//API  endpoint to get child data by ID for the dashboard
+//API  endpoint to get child data by name for child dashboard
 app.post('/api/childDashboard', async (req, res) => {
     const child = req.body.childName;
 
     getChildData(child, (err, result, statusCode) => {
+        if (err) {
+            console.error('Error:', err);
+            return res.status(500).json({ message: 'Internal Server Error' });
+        }
+        console.log(result)
+        res.status(statusCode).json(result);
+    });
+});
+//API  endpoint to get child data by name for parent dashboard
+app.post('/api/parentDashboard', async (req, res) => {
+    const child = req.body.childName;
+
+    getChildUsage(child, (err, result, statusCode) => {
         if (err) {
             console.error('Error:', err);
             return res.status(500).json({ message: 'Internal Server Error' });

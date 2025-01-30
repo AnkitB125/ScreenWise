@@ -6,6 +6,7 @@ const os = require('os');
 const bodyParser = require('body-parser');
 const childRouter = require('./routes/childRouter');
 const offlineActivityRouter = require('./routes/offlineActivityRouter');
+const onlineActivityRouter = require('./routes/onlineActivityRouter');
 
 const app = express();
 const PORT = 3000;
@@ -19,9 +20,9 @@ const io = socketIo(server);
 //const { postOfflineActivity, listOfflineActivity  } = require('./public/js/offlineActivity_db');
 const { postLogOfflineActivity } = require('./public/js/logOfflineActivity_db')
 //const { listChild } = require('./models/child_db');
-const { postOnlineActivity } = require('./public/js/onlineActivity_db');
+//const { postOnlineActivity } = require('./public/js/onlineActivity_db');
 const { startTimer } = require('./public/js/timer_db');
-const { listOnlineActivity } = require('./public/js/onlineActivity_db');
+//const { listOnlineActivity } = require('./public/js/onlineActivity_db');
 const { postDailyUsage, getDailyUsage  } = require('./public/js/dailyUsage_db');
 //const childController = require('./controllers/childController'); // Import the controller
 
@@ -46,6 +47,9 @@ app.use('/api', childRouter);
 
 // Use the offlineActivity router for offlineActivity-related routes
 app.use('/api', offlineActivityRouter); 
+
+// Use the onlineActivity router for offlineActivity-related routes
+app.use('/api', onlineActivityRouter); 
 
 
 /*
@@ -73,7 +77,6 @@ app.get('/api/list-offlineActivity', (req, res) => {
     });
 });
 */
-
 // API endpoint to add log offline activity
 app.post('/api/log-offline-activity', (req, res) => {
     const activity = req.body;
@@ -115,7 +118,7 @@ app.get('/api/list-child', (req, res) => {
         }
         res.status(statusCode).send(result);
     });
-});*/
+});
 
 
 // API endpoint to add online activity
@@ -142,7 +145,7 @@ app.get('/api/list-onlineActivity', (req, res) => {
     });
 });
 
-
+*/
 // API endpoint to add timer record
 app.post('/api/timer', (req, res) => {
     const timer = req.body;

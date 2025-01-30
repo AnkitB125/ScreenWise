@@ -1,7 +1,7 @@
 let client = require('./dbConnection');
 
 let collection = client.db('screenWise').collection('onlineActivities');
-
+/*
 async function postOnlineActivity(activity, callback) {
     try {
         // First check if record already exists so that error message can be displayed
@@ -36,7 +36,7 @@ async function listOnlineActivity(callback) {
         return callback(err);
     };
 };
-
+*/
 ////////////////////////////////
 let { ObjectId } = require('mongodb');
 
@@ -79,8 +79,6 @@ async function updateOnlineActivity(id, activity, callback) {
 }
 
 module.exports = {
-    postOnlineActivity,
-    listOnlineActivity,
     deleteOnlineActivity,
     updateOnlineActivity
 };

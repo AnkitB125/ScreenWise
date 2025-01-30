@@ -30,8 +30,9 @@ async function postDailyUsage(dailyUsage, callback) {
                     //Reduce or increase points available
                     pointsAvailable: pointsIncrement,
                 }
-            }; 
+            };
             const result = await collection.updateOne({ _id: existingDailyUsage._id }, update);
+
             response = "Points balance updated for " + dailyUsage.childName + '.';  
             return callback(null, response, 201);
         } else {

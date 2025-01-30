@@ -1,8 +1,8 @@
 let client = require('./dbConnection');
 let db = client.db('screenWise');
-const collection = db.collection('timer');
+const collection = db.collection('dailyUsage');
 
-async function getChildData(child, callback) {
+async function getChildUsage(child, callback) {
     try {
         const childName = child;
         // Query the collection
@@ -20,5 +20,5 @@ async function getChildData(child, callback) {
     
 
 module.exports = {
-    getChildData
+    getChildUsage
 };

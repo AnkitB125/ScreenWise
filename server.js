@@ -5,6 +5,7 @@ const os = require('os');
 
 const bodyParser = require('body-parser');
 const childRouter = require('./routes/childRouter');
+const offlineActivityRouter = require('./routes/offlineActivityRouter');
 
 const app = express();
 const PORT = 3000;
@@ -15,7 +16,7 @@ const server = http.createServer(app);
 const io = socketIo(server);
 
 //Database functions
-const { postOfflineActivity, listOfflineActivity  } = require('./public/js/offlineActivity_db');
+//const { postOfflineActivity, listOfflineActivity  } = require('./public/js/offlineActivity_db');
 const { postLogOfflineActivity } = require('./public/js/logOfflineActivity_db')
 //const { listChild } = require('./models/child_db');
 const { postOnlineActivity } = require('./public/js/onlineActivity_db');
@@ -33,6 +34,7 @@ const { deleteOnlineActivity, updateOnlineActivity } = require('./public/js/onli
 
 const { getChildScreenTime} = require('./public/js/childScreenTime_db');
 const { getChildData } = require('./public/js/childDashboard_db');
+const { getChildUsage } = require('./public/js/parentDashboard_db');
 
 // Middleware
 app.use(express.json());
@@ -42,7 +44,11 @@ app.use(express.static('public')); // Serve static files from the public folder
 // Use the child router for child-related routes
 app.use('/api', childRouter); 
 
+// Use the offlineActivity router for offlineActivity-related routes
+app.use('/api', offlineActivityRouter); 
 
+
+/*
 // API endpoint to add offline activity
 app.post('/api/offline-activity', (req, res) => {
     const activity = req.body;
@@ -66,7 +72,7 @@ app.get('/api/list-offlineActivity', (req, res) => {
         res.status(statusCode).send(result);
     });
 });
-
+*/
 
 // API endpoint to add log offline activity
 app.post('/api/log-offline-activity', (req, res) => {
@@ -300,15 +306,29 @@ app.put('/api/update-onlineActivity/:id', (req, res) => {
 });
 
 
-//API  endpoint to get child data by ID for the dashboard
-app.get('/api/childDashboard/:id', async (req, res) => {
-    const id = req.params.id;
+//API  endpoint to get child data by name for child dashboard
+app.post('/api/childDashboard', async (req, res) => {
+    const child = req.body.childName;
 
-    getChildData(id, (err, result, statusCode) => {
+    getChildData(child, (err, result, statusCode) => {
         if (err) {
             console.error('Error:', err);
             return res.status(500).json({ message: 'Internal Server Error' });
         }
+        console.log(result)
+        res.status(statusCode).json(result);
+    });
+});
+//API  endpoint to get child data by name for parent dashboard
+app.post('/api/parentDashboard', async (req, res) => {
+    const child = req.body.childName;
+
+    getChildUsage(child, (err, result, statusCode) => {
+        if (err) {
+            console.error('Error:', err);
+            return res.status(500).json({ message: 'Internal Server Error' });
+        }
+        console.log(result)
         res.status(statusCode).json(result);
     });
 });

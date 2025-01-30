@@ -144,7 +144,7 @@ async function getOfflineActivityList() {
             var instances = M.FormSelect.init(elems);
 
         } catch (error) {
-               console.error('Fetch error:', error);
+               console.log('Fetch error:', error);
                showAlert('Network error: ' + error.message, true);
         };
     };

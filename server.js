@@ -8,6 +8,7 @@ const childRouter = require('./routes/childRouter');
 const offlineActivityRouter = require('./routes/offlineActivityRouter');
 const onlineActivityRouter = require('./routes/onlineActivityRouter');
 const timerRouter = require('./routes/timerRouter');
+const logOfflineActivityRouter = require('./routes/logOfflineActivityRouter');
 
 const app = express();
 const PORT = 3000;
@@ -19,7 +20,7 @@ const io = socketIo(server);
 
 //Database functions
 //const { postOfflineActivity, listOfflineActivity  } = require('./public/js/offlineActivity_db');
-const { postLogOfflineActivity } = require('./public/js/logOfflineActivity_db')
+//const { postLogOfflineActivity } = require('./models/logOfflineActivity_db')
 //const { listChild } = require('./models/child_db');
 //const { postOnlineActivity } = require('./public/js/onlineActivity_db');
 //const { startTimer } = require('./public/js/timer_db');
@@ -55,113 +56,10 @@ app.use('/api', onlineActivityRouter);
 // Use the onlineActivity router for timer-related routes
 app.use('/api', timerRouter); 
 
-
-/*
-// API endpoint to add offline activity
-app.post('/api/offline-activity', (req, res) => {
-    const activity = req.body;
-
-    postOfflineActivity(activity, (err, result, statusCode) => {
-        if (err) {
-            return res.status(500).send('Error adding Offline Activity record.');
-        }
-        res.status(statusCode).send(result);
-    });
-});
+// Use the logOfflineActivity router for log offline activity routes
+app.use('/api', logOfflineActivityRouter); 
 
 
-// API endpoint to list offline activity records
-app.get('/api/list-offlineActivity', (req, res) => {
-
-    listOfflineActivity((err, result, statusCode) => {
-        if (err) {
-            return res.status(500).send('Error getting Offline Activity records.');
-        }
-        res.status(statusCode).send(result);
-    });
-});
-*/
-// API endpoint to add log offline activity
-app.post('/api/log-offline-activity', (req, res) => {
-    const activity = req.body;
-
-    postLogOfflineActivity(activity, (err, result, statusCode) => {
-        if (err) {
-            return res.status(500).send('Error adding Log Offline Activity record.');
-        }
-        res.status(statusCode).send(result);
-    });
-});
-
-/*
-// API endpoint to add child record
-app.post('/api/child', (req, res) => {
-    const child = req.body;
-
-    postChild(child, (err, result, statusCode) => {
-        if (err) {
-            return res.status(500).send('Error adding Child record.');
-        }
-        res.status(statusCode).send(result);
-    });
-});*/
-// API endpoint to add child record, now using the controller
-//app.post('/api/child', childController.addChild);
-
-// API endpoint to list child records, for use in listbox fields in timer and earn points forms
-//app.get('/api/list-child', childController.listChildRecords);
-
-
-// API endpoint to list child records
-/*
-app.get('/api/list-child', (req, res) => {
-
-    listChild((err, result, statusCode) => {
-        if (err) {
-            return res.status(500).send('Error getting Child records.');
-        }
-        res.status(statusCode).send(result);
-    });
-});
-
-
-// API endpoint to add online activity
-app.post('/api/online-activity', (req, res) => {
-    const activity = req.body;
-
-    postOnlineActivity(activity, (err, result, statusCode) => {
-        if (err) {
-            return res.status(500).send('Error adding Online Activity record.');
-        }
-        res.status(statusCode).send(result);
-    });
-});
-
-
-// API endpoint to list online activity records
-app.get('/api/list-onlineActivity', (req, res) => {
-
-    listOnlineActivity((err, result, statusCode) => {
-        if (err) {
-            return res.status(500).send('Error getting Online Activity records.');
-        }
-        res.status(statusCode).send(result);
-    });
-});
-
-
-// API endpoint to add timer record
-app.post('/api/timer', (req, res) => {
-    const timer = req.body;
-
-    startTimer(timer, (err, result, statusCode) => {
-        if (err) {
-            return res.status(500).send('Error stopping timer.');
-        }
-        res.status(statusCode).send(result);
-    });
-});
-*/
 
 // API endpoint to add/update dailyUsage
 app.post('/api/daily-usage', (req, res) => {

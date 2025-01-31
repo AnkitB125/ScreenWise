@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             try {
-                const response = await fetch('/api/child', {
+                const response = await fetch('/api/addChild', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

@@ -46,7 +46,7 @@ async function getChildList() {
     const selectElement = document.getElementById('childNameSelect');
     if (selectElement) {
         try {
-            const response = await fetch('/api/list-child', {
+            const response = await fetch('/api/listChild', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -54,7 +54,6 @@ async function getChildList() {
             });
             const childList = await response.json();
         
-
             // Add the options
             childList.forEach(child => {
                 const option = document.createElement('option');

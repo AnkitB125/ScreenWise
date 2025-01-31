@@ -2,21 +2,21 @@ let client = require('../public/js/dbConnection');
 
 let collection = client.db('screenWise').collection('onlineActivities');
 
-async function postOnlineActivity(activity, callback) {
+async function postOnlineActivity(activity) {
     try {
         // First check if record already exists so that error message can be displayed
         const existingActivity = await collection.findOne({ onlineActivityNameText: { $eq: activity.onlineActivityNameText}}); 
         if(existingActivity) {
             response = "Activity " + activity.onlineActivityName + " already exists.";  
-            return callback(null, response, 409);
-
+            return {message: response, statusCode:409}
         } else {
             const insertedRow = await collection.insertOne(activity);
             response = 'Online Activity ' + activity.onlineActivityName + ' added. ';
-            return callback(null, response, 201);
+            return {message:response,statusCode:201};
         };
     } catch (err) {
-        return callback(err);
+        console.log(err);
+        throw new Error('Database error');
     } 
 };
 

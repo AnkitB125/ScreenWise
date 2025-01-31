@@ -1,16 +1,15 @@
-const { postOfflineActivity, listOfflineActivity, po  } = require('../models/offlineActivity_db');
+const { postOfflineActivity, listOfflineActivity } = require('../models/offlineActivity_db');
 
 // Controller function to add offline activity
 async function addOfflineActivity(req, res) {
-
     const activity = req.body;
-
-    const result = postOfflineActivity(activity, (err, result, statusCode) => {
-        if (err) {
-            return res.status(500).send('Error adding Offline Activity record.');
-        }
-        res.status(statusCode).send(result);
-    });
+    try {
+        const result = await postOfflineActivity(activity);
+        res.status(result.statusCode).send(result.message);
+    } catch(err) {
+        console.log(err)
+        res.status(500).send('Error adding Offline Activity record.');
+    };
 };
 
 

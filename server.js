@@ -34,14 +34,163 @@ const { deleteOnlineActivity, updateOnlineActivity } = require('./public/js/onli
 const { getChildScreenTime} = require('./public/js/childScreenTime_db');
 const { getChildData } = require('./public/js/childDashboard_db');
 const { getChildUsage } = require('./public/js/parentDashboard_db');
+const client = require("./public/js/dbConnection"); // Import MongoDB client
+const { ObjectId } = require("mongodb");
 
 // Middleware
 app.use(express.json());
+
+// New Middlewares
+app.use(require('body-parser').urlencoded({ extended: true })); // Parse URL-encoded form data
+app.use(
+    require('express-session')({
+        secret: 'secretKey', // Replace with a strong secret for production
+        resave: false,
+        saveUninitialized: true,
+    })
+);
+
+const usersCollection = client.db("screenWise").collection("users");
+
+
+// Middleware for redirecting from login.html to setup_parent.html
+const redirectToSetup = async (req, res, next) => {
+    try {
+        const userCount = await usersCollection.countDocuments();
+        if (userCount === 0) {
+            // No user exists, redirect to setup
+            return res.redirect("/setup_parent.html");
+        }
+        next(); // User exists, proceed to login
+    } catch (err) {
+        console.error("Error in redirectToSetup middleware:", err);
+        res.status(500).send("Internal Server Error");
+    }
+};
+
+// Middleware for redirecting from setup_parent.html to login.html
+const redirectToLogin = async (req, res, next) => {
+    try {
+        const userCount = await usersCollection.countDocuments();
+        if (userCount > 0) {
+            // User already exists, redirect to login
+            return res.redirect("/login.html");
+        }
+        next(); // No user exists, proceed to setup
+    } catch (err) {
+        console.error("Error in redirectToLogin middleware:", err);
+        res.status(500).send("Internal Server Error");
+    }
+};
+
+const redirectToAdmin = async (req, res, next) => {
+    try {
+        if (req.session.user) {
+            // Redirect to login page if not logged in
+            return res.redirect('/indexAdmin.html');
+        }
+        next(); // No user exists, proceed to setup
+    } catch (err) {
+        console.error("Error in redirectToLogin middleware:", err);
+        res.status(500).send("Internal Server Error");
+    }
+};
+
+
+// Route for login.html with redirectToSetup middleware
+app.get("/login.html", redirectToAdmin, redirectToSetup, (req, res) => {
+    res.sendFile(__dirname + "/public/login.html");
+});
+
+// Route for setup_parent.html with redirectToLogin middleware
+app.get("/setup_parent.html", redirectToAdmin, redirectToLogin, (req, res) => {
+    res.sendFile(__dirname + "/public/setup_parent.html");
+});
+
+// Middleware for Authentication
+app.use('/indexAdmin.html', async (req, res, next) => {
+    console.log('Session:', req.session);
+    try {
+        const userCount = await usersCollection.countDocuments();
+        if (userCount === 0) {
+            // Redirect to setup page if no user exists
+            return res.redirect('setup_parent.html');
+        }
+        if (!req.session.user) {
+            // Redirect to login page if not logged in
+            return res.redirect('login.html');
+        }
+        next(); // Allow access to indexAdmin.html if authenticated
+    } catch (err) {
+        console.error('Error in authentication middleware:', err);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+// // Route for login
+// app.get("/login.html", (req, res) => {
+//     res.sendFile(path.join(__dirname, "public", "login.html"));
+// });
+
+app.post("/login-user", async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        const user = await usersCollection.findOne({ username, password });
+        if (!user) {
+            return res.status(401).send("Invalid credentials!");
+        }
+        req.session.user = { id: user._id, username: user.username }; // Save user in session
+        res.status(200).send("Login successful!");
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+
+app.post("/setup-user", async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        if (!username || !password) {
+            return res.status(400).send("Username and password are required!");
+        }
+        const existingUser = await usersCollection.findOne({ username });
+        if (existingUser) {
+            return res.status(409).send("User already exists!");
+        }
+        await usersCollection.insertOne({ username, password });
+        res.status(201).send("Account created successfully!");
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+// Logout route
+app.post("/logout", (req, res) => {
+    try {
+        // Destroy the session or clear authentication token
+        req.session.destroy((err) => {
+            if (err) {
+                console.error("Error destroying session:", err);
+                return res.status(500).send("Logout failed");
+            }
+            res.status(200).send("Logout successful");
+        });
+    } catch (err) {
+        console.error("Error in logout route:", err);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
 app.use(express.static('public')); // Serve static files from the public folder
 
 
 // Use the child router for child-related routes
 app.use('/api', childRouter); 
+
+
+
 
 
 // API endpoint to add offline activity
@@ -334,11 +483,11 @@ app.get('/api/screentimeusage', (req, res) => {
 
     getChildScreenTime(childName, (err, result, statusCode) => {
 // const record was const result, which threww error as argument in same block function. Unsure of purpose/link yet         
-        const record = childRecords.find(record => record.childName === childName);
-         if (err) {
-             console.error('Error:', err);
-             return res.status(404).json({ message: 'Child not found' });
-         }
+        // const record = childRecords.find(record => record.childName === childName);
+        //  if (err) {
+        //      console.error('Error:', err);
+        //      return res.status(404).json({ message: 'Child not found' });
+        //  }
         res.status(statusCode).json(result);
     });
 });

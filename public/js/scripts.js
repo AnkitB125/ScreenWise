@@ -1,5 +1,5 @@
 // Display messages
-function showAlert(message,isError) {
+function showAlert(message, isError) {
     if (isError) {
         alertBox = document.getElementById('messageError');
         alertBoxClear = document.getElementById('messageOk')
@@ -283,7 +283,7 @@ function getCurrentTime() {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-       
+   
     // Return to Index Admin Main Menu
     const btnBackToIndexAdmin = document.getElementById('btnBackToIndexAdmin');
     if (btnBackToIndexAdmin) {    
@@ -294,7 +294,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Return to Index Main Menu
     const btnBack = document.getElementById('btnBack');
-    if (btnBack) {    
+    if (btnBack) {
         btnBack.addEventListener('click', () => {
             window.location.href = 'index.html';
         });
@@ -313,20 +313,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    
+
     // Display Add Child Form
     const btnAddChildForm = document.getElementById('btnAddChildForm');
-    if (btnAddChildForm) {    
+    if (btnAddChildForm) {
         btnAddChildForm.addEventListener('click', () => {
-            window.location.href='child.html';
+            window.location.href = 'child.html';
         });
     };
 
     // Display List Child Form
     const btnManageChildForm = document.getElementById('btnManageChildForm');
-    if (btnManageChildForm) {    
+    if (btnManageChildForm) {
         btnManageChildForm.addEventListener('click', () => {
-            window.location.href='listChild.html';
+            window.location.href = 'listChild.html';
         });
     };
 /*
@@ -338,32 +338,32 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 */
     const openAddOfflineActivity = document.getElementById('openAddOfflineActivity');
-    if (openAddOfflineActivity) {    
+    if (openAddOfflineActivity) {
         openAddOfflineActivity.addEventListener('click', () => {
-            window.location.href='offlineActivity.html';
+            window.location.href = 'offlineActivity.html';
         });
     };
 
     const openListOfflineActivity = document.getElementById('openListOfflineActivity');
-    if (openListOfflineActivity) {    
+    if (openListOfflineActivity) {
         openListOfflineActivity.addEventListener('click', () => {
-            window.location.href='listOfflineActivity.html';
+            window.location.href = 'listOfflineActivity.html';
         });
     };
 
     // Display Add Offline Activity Form
     const btnAddOfflineActivityForm = document.getElementById('btnAddOfflineActivityForm');
-    if (btnAddOfflineActivityForm) {    
+    if (btnAddOfflineActivityForm) {
         btnAddOfflineActivityForm.addEventListener('click', () => {
-            window.location.href='offlineActivity.html';
+            window.location.href = 'offlineActivity.html';
         });
     };
 
     // Display Add Timer Form
     const btnTimerForm = document.getElementById('btnTimerForm');
-    if (btnTimerForm) {    
+    if (btnTimerForm) {
         btnTimerForm.addEventListener('click', () => {
-            window.location.href='timer.html';
+            window.location.href = 'timer.html';
         });
     };
 
@@ -374,28 +374,49 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.location.href='logOFflineActivity.html';
             });
         };
-    
+
     // Display Add Online Activity Form
     const btnAddOnlineActivityForm = document.getElementById('btnAddOnlineActivityForm');
-    if (btnAddOnlineActivityForm) {    
+    if (btnAddOnlineActivityForm) {
         btnAddOnlineActivityForm.addEventListener('click', () => {
-            window.location.href='onlineActivity.html';
+            window.location.href = 'onlineActivity.html';
         });
     };
 
     const openAddOnlineActivity = document.getElementById('openAddOnlineActivity');
-    if (openAddOnlineActivity) {    
+    if (openAddOnlineActivity) {
         openAddOnlineActivity.addEventListener('click', () => {
-            window.location.href='onlineActivity.html';
+            window.location.href = 'onlineActivity.html';
         });
     };
 
     const openListOnlineActivity = document.getElementById('openListOnlineActivity');
-    if (openListOnlineActivity) {    
+    if (openListOnlineActivity) {
         openListOnlineActivity.addEventListener('click', () => {
-            window.location.href='listOnlineActivity.html';
+            window.location.href = 'listOnlineActivity.html';
+        });
+    };
+    const childDashboard = document.getElementById('btnChildDashboard');
+    if (childDashboard) {
+        childDashboard.addEventListener('click', () => {
+            window.location.href = 'childDashboard.html';
         });
     };
 
+
+    const childScreenTime = document.getElementById('btnChildScreenTime');
+    if (childScreenTime) {
+        childScreenTime.addEventListener('click', () => {
+            window.location.href = 'childScreenTime.html';
+        });
+    };
+
+
+    const parentDashboard = document.getElementById('btnParentDashboard');
+    if (parentDashboard) {
+        parentDashboard.addEventListener('click', () => {
+            window.location.href = 'indexAdmin.html';
+        });
+    };
 });
 

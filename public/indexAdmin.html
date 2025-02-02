@@ -15,40 +15,83 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Custom Style Sheet-->
-    <link rel="stylesheet" href="css/styles.css"> 
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        a.btn {
+            width: 300px;
+        }
+    </style>
 </head>
 
 <body>
     <div class="space-above-50"></div>
-        <main class="main-body">
-            <div class="container">
+    <main class="main-body">
+        <div class="container">
+            <div class="row">
                 <div class="row">
                     <div class="col s12 center-align">
-                        <a class="waves-effect waves-light btn click-me-button" id="btnAddOfflineActivityForm"><i
-                            class="material-icons left">auto_fix_high</i>Add OfflineActivity</a>
+                        <a class="waves-effect waves-light btn click-me-button" id="btnAddChildForm"><i
+                                class="material-icons left">auto_fix_high</i>Add Child</a>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col s12 center-align">
+                        <a class="waves-effect waves-light btn click-me-button" id="btnChildList"><i
+                                class="material-icons left">auto_fix_high</i>Manage Child Records</a>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col s12 center-align">
-                        <a class="waves-effect waves-light btn click-me-button" id="btnAddOnlineActivityForm"><i
-                                class="material-icons left">auto_fix_high</i>Add Online Activity</a>
+                        <a class="waves-effect waves-light btn click-me-button" id="btnChildDashboard"><i
+                                class="material-icons left">auto_fix_high</i>Child Dashboard</a>
                     </div>
-                    
-                </div>              
-                <div class="row">
-                    <div class="col s12 center-align">
-                        <a class="waves-effect waves-light btn click-me-button" id="btnManageChildForm"><i
-                            class="material-icons left">auto_fix_high</i>Manage Child Records</a>
-                    </div>
+                </div>
+                <div class="col s12 center-align">
+                    <a class="waves-effect waves-light btn click-me-button" id="btnAddOfflineActivityForm"><i
+                            class="material-icons left">auto_fix_high</i>Add OfflineActivity</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 center-align">
+                    <a class="waves-effect waves-light btn click-me-button" id="btnAddOnlineActivityForm"><i
+                            class="material-icons left">auto_fix_high</i>Add Online Activity</a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 center-align">
+                    <a class="waves-effect waves-light btn click-me-button red" id="logout-button"><i
+                            class="material-icons left">logout</i>Logout</a>
                 </div>
             </div>
         </div>
+        </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <!-- Compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <script src="js/scripts.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <script src="js/scripts.js"></script>
+        <script>
+            $(document).ready(function () {
+                $("#logout-button").click(function () {
+                    // Make an AJAX request to logout
+                    $.ajax({
+                        url: "/logout",
+                        method: "POST",
+                        success: function () {
+                            alert("You have been logged out successfully!");
+                            // Redirect to login page
+                            window.location.href = "/login.html";
+                        },
+                        error: function (xhr) {
+                            alert("Logout failed: " + xhr.responseText);
+                        },
+                    });
+                });
+            });
+        </script>
 </body>
 
 </html>

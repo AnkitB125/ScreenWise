@@ -1,3 +1,5 @@
 package-lock.json
 /node_modules
 *:Zone.Identifier
+package-lock.json
+.env

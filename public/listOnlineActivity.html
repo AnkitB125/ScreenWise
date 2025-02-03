@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ScreenWise - Add Offline Activity</title>
+    <title>ScreenWise - Online Activity List</title>
     <meta name="description" content="ScreenWise Screen Time Tracker">
     <meta name="author" content="SIT725 Students - KT, PJ, AB and PH">
     <meta property="og:title" content="ScreenWise Add Offline Activity">
@@ -21,17 +21,27 @@
 <body>
     <img class="responsive-img" width="100%" src="images/banner.png" />
     <main class="main-body">
-        <div class="container space-above-50 space-below-50">
-            <div class="col s12 right-align">
-                <a class="waves-effect waves-light btn click-me-button" id="btnAddOnlineActivityForm"><i
-                        class="material-icons left">auto_fix_high</i>ADD ONLINE ACTIVITY</a>
+        <div class="container space-below-50">
+            <h4 class="center-align">Record Representing preffered online activities</h3>
+            <div class="row">
+                <div class="col s12 center-align">
+                    <a class="waves-effect waves-light btn click-me-button" id="btnBackToIndexAdmin"><i
+                            class="material-icons left">auto_fix_high</i>Back to Parent Dashboard</a>
+                </div>
             </div>
+    
+            <div class="row">
+                <div class="col s12 center-align">
+                    <a class="waves-effect waves-light btn click-me-button" id="btnAddOnlineActivityForm"><i
+                            class="material-icons left">auto_fix_high</i>ADD ONLINE ACTIVITY</a>
+                </div>
+            </div>
+            
             <div class="row">
                 <div class="row">
                     <div class="error-msg-text" id="messageError"></div>
                     <div class="ok-msg-txt" id="messageOk"></div>
                 </div>
-                <h3>Record Representing preffered online activities</h3>
                 <table id="online-activity-table" class="striped highlight responsive-table">
                     <thead>
                         <tr>
@@ -46,14 +56,6 @@
                     </tbody>
                 </table>
             </div>
-            <div class="row">
-
-            </div>
-            <div class="col s12 right-align">
-                <a class="waves-effect waves-light btn click-me-button" id="btnBack"><i
-                        class="material-icons left">auto_fix_high</i>BACK</a>
-            </div>
-
             <div id="updateOnlineActivity" class="modal">
                 <div class="modal-content">
                     <h4>Update offline activity</h4>

@@ -329,14 +329,7 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.href = 'listChild.html';
         });
     };
-/*
-    const listChildren = document.getElementById('listChildren');
-    if (listChildren) {    
-        listChildren.addEventListener('click', () => {
-            window.location.href='list_children.html';
-        });
-    };
-*/
+
     const openAddOfflineActivity = document.getElementById('openAddOfflineActivity');
     if (openAddOfflineActivity) {
         openAddOfflineActivity.addEventListener('click', () => {
@@ -371,7 +364,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnLogOfflineActivityForm = document.getElementById('btnLogOfflineActivityForm');
         if (btnLogOfflineActivityForm) {    
             btnLogOfflineActivityForm.addEventListener('click', () => {
-                window.location.href='logOFflineActivity.html';
+                window.location.href='logOfflineActivity.html';
             });
         };
 

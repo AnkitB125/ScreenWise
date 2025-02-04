@@ -1,5 +1,4 @@
 let client = require('./dbConnection');
-let { ObjectId } = require('mongodb');
 
 let collection = client.db('screenWise').collection('onlineActivities');
 /*
@@ -31,21 +30,15 @@ async function listOnlineActivity(callback) {
         if(listValues) {
             return callback(null, listValues, 201);
         } else {
-            return callback(null, {
-                "message": "No online activities found."
-            }, 404);
+            return callback(null, 'No online activity values values found', 404);
         }
     } catch (err) {
         return callback(err);
     };
 };
-<<<<<<< HEAD
-
-=======
 */
 ////////////////////////////////
 let { ObjectId } = require('mongodb');
->>>>>>> codeReview/nonConflict_files
 
 async function deleteOnlineActivity(id, callback) {
     try {

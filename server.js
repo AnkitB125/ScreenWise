@@ -5,6 +5,10 @@ const os = require('os');
 
 const bodyParser = require('body-parser');
 const childRouter = require('./routes/childRouter');
+const offlineActivityRouter = require('./routes/offlineActivityRouter');
+const onlineActivityRouter = require('./routes/onlineActivityRouter');
+const timerRouter = require('./routes/timerRouter');
+const logOfflineActivityRouter = require('./routes/logOfflineActivityRouter');
 
 const app = express();
 const PORT = 3000;
@@ -15,12 +19,13 @@ const server = http.createServer(app);
 const io = socketIo(server);
 
 //Database functions
-const { postOfflineActivity, listOfflineActivity  } = require('./public/js/offlineActivity_db');
-const { postLogOfflineActivity } = require('./public/js/logOfflineActivity_db')
+//Database functions
+//const { postOfflineActivity, listOfflineActivity  } = require('./public/js/offlineActivity_db');
+//const { postLogOfflineActivity } = require('./models/logOfflineActivity_db')
 //const { listChild } = require('./models/child_db');
-const { postOnlineActivity } = require('./public/js/onlineActivity_db');
-const { startTimer } = require('./public/js/timer_db');
-const { listOnlineActivity } = require('./public/js/onlineActivity_db');
+//const { postOnlineActivity } = require('./public/js/onlineActivity_db');
+//const { startTimer } = require('./public/js/timer_db');
+//const { listOnlineActivity } = require('./public/js/onlineActivity_db');
 const { postDailyUsage, getDailyUsage  } = require('./public/js/dailyUsage_db');
 //const childController = require('./controllers/childController'); // Import the controller
 
@@ -34,6 +39,8 @@ const { deleteOnlineActivity, updateOnlineActivity } = require('./public/js/onli
 const { getChildScreenTime} = require('./public/js/childScreenTime_db');
 const { getChildData } = require('./public/js/childDashboard_db');
 const { getChildUsage } = require('./public/js/parentDashboard_db');
+
+//are the next 2 lines redundant, as provided elsewhere? ***************************************************************************
 const client = require("./public/js/dbConnection"); // Import MongoDB client
 const { ObjectId } = require("mongodb");
 
@@ -189,8 +196,17 @@ app.use(express.static('public')); // Serve static files from the public folder
 // Use the child router for child-related routes
 app.use('/api', childRouter); 
 
+// Use the offlineActivity router for offlineActivity-related routes
+app.use('/api', offlineActivityRouter); 
 
+// Use the onlineActivity router for offlineActivity-related routes
+app.use('/api', onlineActivityRouter); 
 
+// Use the onlineActivity router for timer-related routes
+app.use('/api', timerRouter); 
+
+// Use the logOfflineActivity router for log offline activity routes
+app.use('/api', logOfflineActivityRouter);
 
 
 // API endpoint to add offline activity
@@ -482,7 +498,7 @@ app.get('/api/screentimeusage', (req, res) => {
     const childName = req.query.childName;
 
     getChildScreenTime(childName, (err, result, statusCode) => {
-// const record was const result, which threww error as argument in same block function. Unsure of purpose/link yet         
+// const record was const result, which threw error as argument in same block function. Unsure of purpose/link yet         
         // const record = childRecords.find(record => record.childName === childName);
         //  if (err) {
         //      console.error('Error:', err);

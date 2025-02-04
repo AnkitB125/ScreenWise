@@ -145,6 +145,7 @@ async function getOfflineActivityList() {
 
         } catch (error) {
                console.error('Fetch error:', error);
+               console.log('Fetch error:', error); //added from Karen's script.js
                showAlert('Network error: ' + error.message, true);
         };
     };
@@ -364,7 +365,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnLogOfflineActivityForm = document.getElementById('btnLogOfflineActivityForm');
         if (btnLogOfflineActivityForm) {    
             btnLogOfflineActivityForm.addEventListener('click', () => {
-                window.location.href='logOfflineActivity.html';
+                window.location.href = 'logOfflineActivity.html';
             });
         };
 
@@ -389,6 +390,8 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.href = 'listOnlineActivity.html';
         });
     };
+
+
     const childDashboard = document.getElementById('btnChildDashboard');
     if (childDashboard) {
         childDashboard.addEventListener('click', () => {
@@ -412,4 +415,3 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 });
-

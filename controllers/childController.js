@@ -18,7 +18,6 @@ async function addChild(req, res) {
 async function listChildRecords(req, res) {
     try {
         const childList = await listChild(); // Call the model function
-        
         res.status(200).json(childList); // Send the list of children
     } catch (err) {
         res.status(500).send('Error fetching child records.'); // Handle errors appropriately

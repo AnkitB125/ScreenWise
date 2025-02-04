@@ -3,6 +3,7 @@ let client = require('./dbConnection');
 let collection = client.db('screenWise').collection('offlineActivities');
 let { ObjectId } = require('mongodb');
 
+<<<<<<< HEAD
 async function postOfflineActivity(activity, callback) {
     try {
         // First check if record already exists so that error message can be displayed
@@ -39,6 +40,10 @@ async function listOfflineActivity(callback) {
     };
 };
 
+=======
+//////////////////////////
+let { ObjectId } = require('mongodb');
+>>>>>>> codeReview/nonConflict_files
 
 // Function to delete offline activity
 async function deleteOfflineActivity(id, callback) {
@@ -86,8 +91,6 @@ async function updateOfflineActivity(id, updatedActivity, callback) {
 // Need to add getOfflineActivity, updateOfflineActivity and deleteOfflineActivity
 
 module.exports = {
-    postOfflineActivity,
-    listOfflineActivity,
     deleteOfflineActivity,
     updateOfflineActivity
 };
